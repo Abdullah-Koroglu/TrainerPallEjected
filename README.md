@@ -1,0 +1,2 @@
+# TrainerPallPages
+# TrainerPallEjected
