@@ -1,60 +1,195 @@
-import React , {useContext , useEffect} from 'react'
-import {Context as authContext} from '../context/AuthContext'
-import { Text,View , StyleSheet,TouchableOpacity , Alert , ActivityIndicator , SafeAreaView}  from 'react-native'
+import React, { useContext, useEffect } from 'react'
+import { Context as authContext } from '../context/AuthContext'
+import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
+import { Card } from 'react-native-elements'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import AuthForm from '../components/AuthForm'
+import { color } from 'react-native-reanimated';
+const window = Dimensions.get('window');
 
-SignupScreen = ({navigation}) =>{
-    const {state,signup , clearError } = useContext(authContext)
-    
+
+SignupScreen = ({ navigation }) => {
+    const { state, signup, clearError } = useContext(authContext)
+
 
     const errorAlert = () => Alert.alert(
         state.errorMessage,
         '',
-        [{text: 'OK', onPress: () => clearError()}],
+        [{ text: 'OK', onPress: () => clearError() }],
         { cancelable: false }
-      )
-      if(state.errorMessage !== '' ){errorAlert()}
+    )
+    if (state.errorMessage !== '') { errorAlert() }
 
-        useEffect(() => {
-            // loginViaStored()
-        }, [])
-        
-        return(<SafeAreaView style={styles.container}>
-            <AuthForm 
-                headerText='Trainer Pall' 
-                submitButtonText='Sign Up' 
-                 onSubmit={signup}
-            ><TouchableOpacity  onPress={() => navigation.navigate('Signin')}>
-                <Text style={styles.gotoButton}>Already have an account? Sign in.</Text>
-            </TouchableOpacity>
-            </AuthForm>
-        </SafeAreaView>)
+    useEffect(() => {
+        // loginViaStored()
+    }, [])
+
+    return (<SafeAreaView style={styles.background} forceInset={{top:'always'}} >
+        <View style={{
+            backgroundColor: "#694fad", height: window.height * 0.5, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
+            borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
+        }}>
+            {/* <MaterialCommunityIcons name="bike" size={100} color="#fff" style={{paddingTop:window.height*0.1}} /> */}
+            <Text style={{ fontSize: window.height*0.05, color: "#fff", paddingTop: window.height*0.13 }}>
+                [YOUR LOGO HERE]
+            </Text>
+        </View>
+        <View style={styles.container}>
+            <View style={styles.Card}>
+                <AuthForm
+                    headerText='Trainer Pall'
+                    submitButtonText='Sign Up'
+                    onSubmit={signup}
+                ><TouchableOpacity onPress={() => navigation.navigate('Signin')}>
+                        <Text style={styles.gotoButton}>Already have an account? Sign in.</Text>
+                    </TouchableOpacity>
+                </AuthForm>
+            </View>
+        </View>
+    </SafeAreaView>)
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:0.8,
-        justifyContent:'center',
-        paddingHorizontal:10,
+    Card: {
+        width: window.width * 0.9,
+        alignSelf: "center",
+        borderRadius: window.height * 0.03,
+        borderBottomWidth: 0,
+        // flex: 0.6,
+        justifyContent: "space-around",
+        position: "absolute",
+        bottom: window.height * 0.28,
+        height: window.height * 0.45,
+        backgroundColor: "#fff",
+        paddingTop:window.height*0.03
     },
-    submitButton:{
-        paddingTop:10,
-        color:'#6E9EC9',
-        fontSize:28,
-        alignSelf:'center'
-    },
-    gotoButton:{
-        marginTop:15,
-        fontSize:18
+    background: {
+        flexDirection: "column",
+        alignSelf: "center",
+        flex: 1,
+        width: window.height * 1.6,
 
     },
-    headerText:{
-        paddingBottom:13,
-        fontWeight:'normal',
-        fontSize:50
-    }
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: window.height*0.01,
+
+    },
+    // submitButton: {
+    //     paddingTop: window.height,
+    //     color: '#694fad',
+    //     fontSize: 28,
+    //     alignSelf: 'center'
+    // },
+    gotoButton: {
+        marginTop: window.width * 0.03,
+        marginLeft: window.width * 0.05,
+        fontSize: window.height * 0.017
+
+    },
+    // headerText: {
+    //     paddingBottom: window.width * 0.014,
+    //     fontWeight: 'normal',
+    //     fontSize: window.width * 0.033
+    // }
 
 })
 
 export default SignupScreen
+
+
+
+// import React , {useContext , useEffect} from 'react'
+// import {Context as authContext} from '../context/AuthContext'
+// import { Text,View , StyleSheet,TouchableOpacity , Alert , ActivityIndicator , SafeAreaView , Dimensions}   from 'react-native'
+// import { Card} from 'react-native-elements'
+
+// import AuthForm from '../components/AuthForm'
+// const window = Dimensions.get('window');
+
+
+// SignupTemp = ({navigation}) =>{
+//     const {state,signup , clearError } = useContext(authContext)
+
+
+//     const errorAlert = () => Alert.alert(
+//         state.errorMessage,
+//         '',
+//         [{text: 'OK', onPress: () => clearError()}],
+//         { cancelable: false }
+//       )
+//       if(state.errorMessage !== '' ){errorAlert()}
+
+//         useEffect(() => {
+//             // loginViaStored()
+//         }, [])
+
+//         return(<SafeAreaView style={styles.background}>
+//             <View style={styles.container}>
+//                 <Card containerStyle={styles.Card}>
+//                     <View>
+//                       <AuthForm 
+//                 headerText='Trainer Pall' 
+//                 submitButtonText='Sign Up' 
+//                  onSubmit={signup}
+//                  style={{marginBottom:50}}
+//             ><TouchableOpacity  onPress={() => navigation.navigate('Signin')}>
+//                 <Text style={styles.gotoButton}>Already have an account? Sign in.</Text>
+//             </TouchableOpacity>
+//             </AuthForm>  
+//                     </View>
+
+//                 </Card>
+//                 {/* <View style={{}} > */}
+
+//                 </View>
+//             {/* </View> */}
+//         </SafeAreaView>)
+// }
+
+// const styles = StyleSheet.create({
+//     Card:{
+//         width :window.width*0.9,
+//         alignSelf:"center",
+//         borderRadius:window.height*0.03,
+//         borderBottomWidth:0,
+//         flex:0.6,
+//         justifyContent:"space-evenly"
+//     },
+//     background:{
+//         flexDirection:"row",
+//         alignSelf:"center",
+//         flex:0.8,
+//         width:2000,
+//         borderBottomEndRadius:2000,
+//         borderBottomStartRadius:2000,
+//         backgroundColor:"#694fad",
+//     },
+//     container:{
+//         flex:1,
+//         justifyContent:'center',
+//         paddingHorizontal:10,
+
+//     },
+//     submitButton:{
+//         paddingTop:10,
+//         color:'#6E9EC9',
+//         fontSize:28,
+//         alignSelf:'center'
+//     },
+//     gotoButton:{
+//         marginTop:15,
+//         fontSize:18
+
+//     },
+//     headerText:{
+//         paddingBottom:13,
+//         fontWeight:'normal',
+//         fontSize:50
+//     }
+
+// })
+
+// export default SignupTemp

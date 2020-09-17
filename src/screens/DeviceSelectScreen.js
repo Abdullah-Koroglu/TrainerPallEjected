@@ -3,23 +3,20 @@ import {
   StyleSheet,
   Text,
   View,
-  TouchableHighlight,
   NativeEventEmitter,
   NativeModules,
   Platform,
   PermissionsAndroid,
-  ScrollView,
   AppState,
   FlatList,
   Dimensions,
-  Button,
   SafeAreaView,
-  TouchableOpacity,
-  Switch
+  Switch,AsyncStorage
 } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import {Context as WorkoutContext} from '../context/WorkoutContext'
 import IteminList from '../components/IteminList';
+import { Button } from 'react-native-paper';
 
 const window = Dimensions.get('window');
 
@@ -31,20 +28,33 @@ const DeviceSelectScreen = (props) => {
   const {setHR} = useContext(WorkoutContext)
   const [scanning , setscanning] = useState(false)
   const [peripherals , setperipherals] = useState([])
+  const [list , setlist] = useState(Array.from(peripherals))
+
+    // var handleDiscoverPeripheral = handleDiscoverPeripheral.bind(this);
+    // var handleStopScan = handleStopScan.bind(this);
+    // var handleUpdateValueForCharacteristic = handleUpdateValueForCharacteristic.bind(this);
+    // var handleDisconnectedPeripheral = handleDisconnectedPeripheral.bind(this);
+    // var handleAppStateChange = handleAppStateChange.bind(this);
+
   
-  var handlerDiscover = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral );
-  var handlerStop = bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan );
-  var handlerDisconnect = bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral );
-  var handlerUpdate = bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic );
+   handlerDiscover = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral );
+   handlerStop = bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan );
+   handlerDisconnect = bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral );
+   handlerUpdate = bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic );
 
   useEffect(() => {
+    retrieveSaved();
     // setscanning(false);
     AppState.addEventListener('change', handleAppStateChange);
-    BleManager.start({showAlert: false});
+    BleManager.start({showAlert: true});
 
+    handleDiscoverPeripheral = handleDiscoverPeripheral.bind()
+
+    
     if (Platform.OS === 'android' && Platform.Version >= 23) {
         PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
             if (result) {
+              console.log(result);
               console.log("Permission is OK");
             } else {
               PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
@@ -59,6 +69,19 @@ const DeviceSelectScreen = (props) => {
     }
   });
 
+  retrieveSaved  =async() =>{
+    const savedItem = await AsyncStorage.getItem('savedItem')
+    if(!peripherals.includes(JSON.parse(savedItem).id))
+    peripherals.push(JSON.parse(savedItem).id,JSON.parse(savedItem));
+    // const list = Array.from(peripherals);
+    // setlist(peripherals)
+    // console.log(list);
+    // handleDiscoverPeripheral(JSON.parse(savedItem))
+    // test(savedItem)
+    // const retrievedItem =  await AsyncStorage.getItem("naber");
+    // console.log(JSON.parse(retrievedItem));
+  }
+ 
   handleAppStateChange = (nextAppState)=> {
     if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
@@ -76,6 +99,7 @@ const DeviceSelectScreen = (props) => {
     if (peripheral) {
       peripheral.connected = false;
       peripherals.push(peripheral.id, peripheral);
+      setperipherals(peripherals)
     }
     console.log('Disconnected from ' + data.peripheral);
   }
@@ -96,7 +120,6 @@ const DeviceSelectScreen = (props) => {
       BleManager.scan([], 5, true).then(() => {
         console.log('Scanning...');
         setscanning(true);
-
       });
     }
   }
@@ -122,33 +145,25 @@ const DeviceSelectScreen = (props) => {
     if(!peripherals.includes(peripheral.id))
         peripherals.push(peripheral.id, peripheral);
     // console.log('Got ble peripheral', peripheral);
-    const list = Array.from(peripherals);
-    console.log(list)
+    // const list = Array.from(peripherals);
+    // setlist(list)
+    console.log(peripherals)
+    // setperipherals(peripherals)
     }
+
+    
 
 
   test =(peripheral) => {
-    if (peripheral){
-      if (peripheral.connected){
-        BleManager.disconnect(peripheral.id);
-      }else{
-        BleManager.connect(peripheral.id).then(() => {
+        BleManager.connect(peripheral.id).then(async() => {
           //  let p = peripheral.id
           // if (p) {
           //   p.connected = true;
           //   // peripherals.set(peripheral.id, p);
           // }
+          await AsyncStorage.setItem('savedItem',JSON.stringify(peripheral))
           console.log('Connected to ' + peripheral.name);
           setTimeout(() => {
-            /* Test read current RSSI value
-            BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
-              console.log('Retrieved peripheral services', peripheralData);
-              BleManager.readRSSI(peripheral.id).then((rssi) => {
-                console.log('Retrieved actual RSSI value', rssi);
-              });
-            });*/
-            // Test using bleno's pizza example
-            // https://github.com/sandeepmistry/bleno/tree/master/examples/pizza
             BleManager.retrieveServices(peripheral.id).then((peripheralInfo) => {
               console.log(peripheralInfo);
               var service = '0000180D-0000-1000-8000-00805f9b34fb';
@@ -169,39 +184,33 @@ const DeviceSelectScreen = (props) => {
         }).catch((error) => {
           console.log('Connection error', error);
         });
-      }
     }
-  }
+    
 
-    const list = Array.from(peripherals);
     const toggleSwitch = () => startScan();
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
-          <View style={{margin: 10 , flexDirection:"row" , justifyContent:"space-between", padding:14}}>
-            {/* <Button title="navigate" onPress={() => {this.props.navigation.pop()} } /> */}
-            <Text style={{fontSize:22 , fontWeight:"bold"}}>Toggle for Scanning</Text>
-            <Switch
-        trackColor={{ false: "#eeeeee", true: "#749f9c" }}
-        thumbColor={scanning ? "#317873" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={scanning}
-      />
-      {/* <Button title="Retrieve connected peripherals" onPress={() => this.retrieveConnected() } /> */}
+          <View style={{ margin: 10 }}>
+            <Button title="naber" onPress={() => startScan()} />
           </View>
+          <Text>{HR}</Text>
+          <View style={{ margin: 10 }}>
+            <Button title="Retrieve connected peripherals" onPress={() => this.retrieveConnected()} />
+          </View>
+
           <ScrollView style={styles.scroll}>
             {(list.length == 0) &&
-              <View style={{flex:1, margin: 20}}>
-                <Text style={{textAlign: 'center'}}>No peripherals</Text>
+              <View style={{ flex: 1, margin: 20 }}>
+                <Text style={{ textAlign: 'center' }}>No peripherals</Text>
               </View>
             }
             <FlatList
-              data={list}
+              data={peripherals}
               renderItem={({ item }) => 
-                <IteminList id = {item.id} rssi = {item.rssi} name = {item.name} onPress={() => test(item)} connected={item.connected}/>
-             }
-              keyExtractor={item => item.id}
+              <IteminList id = {item.id} rssi = {item.rssi} name = {item.name} onPress={() =>{test(item)}
+                } connected={item.connected}/>
+           }              keyExtractor={item => item.id}
             />
 
           </ScrollView>
@@ -220,10 +229,10 @@ const styles = StyleSheet.create({
   scroll: {
     flex: 1,
     //backgroundColor: '#f0f0f0',
-    margin: 10,
+    margin: window.height*0.012,
   },
   row: {
-    margin: 10
+    margin: window.height*0.0122
   },
   itemName:{
 

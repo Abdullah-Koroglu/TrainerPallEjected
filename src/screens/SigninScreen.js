@@ -1,54 +1,83 @@
-import React , {useContext} from 'react'
-import {View ,Text, StyleSheet,SafeAreaView,TouchableOpacity,Alert } from 'react-native'
+import React, { useContext } from 'react'
+import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
 import { Context } from '../context/AuthContext'
 
+const window = Dimensions.get('window');
 import AuthForm from '../components/AuthForm'
 
-SigninScreen = ({navigation}) =>{
-const {state , signin , clearError} = useContext(Context)
+SigninScreen = ({ navigation }) => {
+    const { state, signin, clearError } = useContext(Context)
 
-const errorAlert = () => Alert.alert(
-    state.errorMessage,
-    '',
-    [{text: 'OK', onPress: () => clearError()}],
-    { cancelable: false }
-  )
-  if(state.errorMessage !== '' ){errorAlert()} 
+    const errorAlert = () => Alert.alert(
+        state.errorMessage,
+        '',
+        [{ text: 'OK', onPress: () => clearError() }],
+        { cancelable: false }
+    )
+    if (state.errorMessage !== '') { errorAlert() }
 
-    return(<SafeAreaView style={styles.container}>
-            <AuthForm 
-                headerText='Trainer Pall' 
-                submitButtonText='Sign In' 
-                 onSubmit={({email,password}) =>signin({email,password})}
-            >
-            <TouchableOpacity  onPress={() => navigation.navigate('Signup')}>
-                <Text style={styles.gotoButton}>Haven't signed up yet? Sign Up.</Text>
-            </TouchableOpacity>
-            </AuthForm>
-        </SafeAreaView>)
+    return (<SafeAreaView style={styles.background}>
+        <View style={{
+            backgroundColor: "#694fad", height: window.height * 0.5, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
+            borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
+        }}>
+            {/* <MaterialCommunityIcons name="bike" size={100} color="#fff" style={{paddingTop:window.height*0.1}} /> */}
+            <Text style={{ fontSize: window.height*0.05, color: "#fff", paddingTop: window.height*0.13 }}>
+                [YOUR LOGO HERE]
+            </Text>
+        </View><View style={styles.container}>
+            <View style={styles.Card}>
+                <AuthForm
+                    headerText='Trainer Pall'
+                    submitButtonText='Sign In'
+                    onSubmit={({ email, password }) => signin({ email, password })}
+                >
+                    <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+                        <Text style={styles.gotoButton}>Haven't signed up yet? Sign Up.</Text>
+                    </TouchableOpacity>
+                </AuthForm></View>
+        </View>
+    </SafeAreaView>)
 }
 
 const styles = StyleSheet.create({
-    container:{
-        flex:0.8,
-        justifyContent:'center',
-        paddingHorizontal:10,
-        marginTop:10
+    Card: {
+        width: window.width * 0.9,
+        alignSelf: "center",
+        borderRadius: window.height * 0.03,
+        borderBottomWidth: 0,
+        // flex: 0.6,
+        justifyContent: "space-around",
+        position: "absolute",
+        bottom: window.height * 0.28,
+        height: window.height * 0.45,
+        backgroundColor: "#fff",
+        paddingTop:window.height*0.03
     },
-    submitButton:{
-        paddingTop:10,
-        color:'#6E9EC9',
-        fontSize:28,
-        alignSelf:'center'
+    background: {
+        flexDirection: "column",
+        alignSelf: "center",
+        flex: 1,
+        width: window.height * 1.6,
+
     },
-    gotoButton:{
-        marginTop:15,
-        fontSize:18
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingHorizontal: window.height*0.01,
+
     },
-    headerText:{
-        paddingBottom:13,
-        fontWeight:'normal',
-        fontSize:50
+    // submitButton: {
+    //     paddingTop: window.height,
+    //     color: '#694fad',
+    //     fontSize: 28,
+    //     alignSelf: 'center'
+    // },
+    gotoButton: {
+        marginTop: window.width * 0.03,
+        marginLeft: window.width * 0.05,
+        fontSize: window.height * 0.017
+
     }
 
 })

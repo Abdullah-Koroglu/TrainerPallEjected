@@ -6,18 +6,18 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 CreateTempScreen = () =>{
     return(
     <SafeAreaView forceInset={{top:'always'}}>
-            <Text style={styles.sigoutButton}>Create your custom Temps here</Text>
-            
+            <Text style={styles.sigoutButton}>In This page you can create your custom workout.</Text>
+            <Text style={styles.sigoutButton}>This page is only for premium users.</Text>
     </SafeAreaView>
     )
 }
 
 const styles = StyleSheet.create({
     sigoutButton:{
-        paddingTop:10,
+        padding:10,
         color:'#98ceb7',
         fontSize:28,
-        alignSelf:'center'
+        // alignSelf:'center'
     }
 
 })

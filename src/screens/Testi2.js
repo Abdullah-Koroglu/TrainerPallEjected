@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useContext } from 'react';
 import {
   StyleSheet,
   Text,
@@ -18,34 +18,25 @@ import {
 import { Context as WorkoutContext } from '../context/WorkoutContext'
 import ExampleScreen from './ExampleScreen';
 import IndexScreen from "./IndexScreen"
-import {ble} from './BleFunctions'
 
 
-export default class Naber extends Component {
-  static contextType = WorkoutContext
-
-  constructor() {
-    super()
-
-    this.state = {
-    }
-  }
-
-
-  render() {
-    // const { state , setHR  } = this.context;
-    // let hr = HR
-    if (this.context.state.HR) {
+export default Naberi =()=> {
+    const {state: {recording, datas, HR },
+    stopRecording,
+    startRecording,
+    addInstant,
+    createWorkout
+} = useContext(WorkoutContext)
+  
+    if (HR) {
       return (
-        // <WorkoutContext.Consumer>
         <View style={styles.container}>
           <Text style={{ fontSize: 50 }}>
-            {this.context.state.HR}
+            {HR}
           </Text>
-          <Button title="Go" onPress={() => ble.testi()}></Button>
-          {/* <Button title="log" onPress={() => console.log(HR)}></Button> */}
+          <Button title="Go" onPress={() => this.props.navigation.navigate("Example")}></Button>
+          <Button title="log" onPress={() => console.log(HR)}></Button>
         </View>
-        // </WorkoutContext.Consumer>
       )
     } else {
       return (
@@ -53,7 +44,6 @@ export default class Naber extends Component {
 
         </ExampleScreen>
       )
-    }
   }
 }
 

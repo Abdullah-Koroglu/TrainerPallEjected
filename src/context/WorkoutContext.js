@@ -1,7 +1,5 @@
 import createDataContext from "./createDataContext";
 import trackerApi from "../api/tracker"
-import BleManager from 'react-native-ble-manager';
-import { dispatch } from "d3";
 
 const trackReducer = (state , action) =>{
     switch (action.type) {
@@ -20,7 +18,7 @@ const trackReducer = (state , action) =>{
         case 'reset':
             return {...state , name:'' , datas:[]}
         case 'set_hr':
-            return{ ... state , HR : action.payload}
+            return{ ... state , HRa : action.payload}
         default:
             return state;
     }
@@ -60,11 +58,11 @@ reset = dispatch =>()=>{
 
 setHR = dispatch => (HR) =>{
     dispatch({type:"set_hr" , payload:HR})
-    console.log(HR)
+    // console.log("HR :" + HR)
 }
 
 export const { Provider , Context } = createDataContext(
     trackReducer,
     { fetchWorkout , reset , createWorkout , startRecording , changeName , addInstant , stopRecording , setHR} ,
-    {recording : false , datas : [] , currentInstant : null ,  name : ""  , list: [] , HR : 120}
+    {recording : false , datas : [] , currentInstant : null ,  name : ""  , list: [] , HRa : 0}
 )

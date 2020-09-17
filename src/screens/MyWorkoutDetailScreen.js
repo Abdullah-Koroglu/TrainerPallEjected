@@ -7,7 +7,8 @@ MyWorkoutDetailScreen = () =>{
     return(
     <SafeAreaView forceInset={{top:'always'}}>
         <TouchableOpacity >
-            <Text style={styles.sigoutButton}>MyWorkoutDetailScreen</Text>
+            <Text style={styles.sigoutButton}>In This page you can see your event's details.</Text>
+            <Text style={styles.sigoutButton}>This page is only for premium users.</Text>
         </TouchableOpacity>
     </SafeAreaView>
     )
@@ -15,10 +16,10 @@ MyWorkoutDetailScreen = () =>{
 
 const styles = StyleSheet.create({
     sigoutButton:{
-        paddingTop:10,
+        padding:10,
         color:'#98ceb7',
         fontSize:28,
-        alignSelf:'center'
+        // alignSelf:'center'
     }
 
 })

@@ -4,7 +4,7 @@ import trackerApi from "../api/tracker"
 const trackReducer = (state , action) =>{
     switch (action.type) {
         case 'fetch_workout':
-            return action.payload
+            return{ ... state , temps : action.payload}
         default:
             return state;
     }
@@ -27,5 +27,5 @@ createTemp = dispatch => async (name , datas) =>{
 export const { Provider , Context } = createDataContext(
     trackReducer,
     { fetchTemp , createTemp } ,
-    {}
+    {temps :[]}
 )
