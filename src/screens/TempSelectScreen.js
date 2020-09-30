@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions , RefreshControl , ScrollView } from 'react-native'
 import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -7,6 +7,22 @@ import { AntDesign } from '@expo/vector-icons';
 
 TempSelectScreen = (props) => {
     const { state, fetchTemp } = useContext(TempContext)
+    const [refreshing, setrefreshing] = useState(false)
+
+    function wait(timeout) {
+        return new Promise(resolve => {
+            setTimeout(resolve, timeout)
+        })
+    }
+    const onRefresh = React.useCallback(() => {
+        setrefreshing(true)
+
+        wait(2000).then(() => {
+            setrefreshing(false);
+            fetchTemp()
+        })
+    }, [refreshing])
+
     useEffect(() => {
         fetchTemp();
     }, [])
@@ -37,6 +53,14 @@ TempSelectScreen = (props) => {
         <View style={{ backgroundColor: "#694fad", flex: 1 }}>
             <View style={styles.topFigure}>
             </View>
+            <ScrollView
+                contentContainerStyle={styles.scrollView}
+                refreshControl={
+                    <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh} />
+                }
+            >
             <FlatList
                 style={{ paddingHorizontal: window.height * 0.022 }}
                 data={state.temps}
@@ -66,7 +90,7 @@ TempSelectScreen = (props) => {
                         </TouchableOpacity>
                     )
                 }}
-            />
+            /></ScrollView>
         </View>
     )
 }
