@@ -247,11 +247,6 @@ export default class ExampleScreen extends Component {
               value={this.state.scanning}
             />
           </View>
-          {/* <Text>{this.context.state.HR}</Text> */}
-          {/* <View style={{ margin: 10 }}>
-          <Button title="Retrieve connected peripherals" onPress={() => ble.retrieveConnected()} />
-          </View>  */}
-
           <FlatList
             data={list}
             renderItem={({ item }) =>

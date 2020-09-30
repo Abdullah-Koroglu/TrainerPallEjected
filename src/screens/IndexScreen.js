@@ -25,6 +25,7 @@ import { Context as WorkoutContext } from '../context/WorkoutContext'
 import BleManager from 'react-native-ble-manager';
 import * as Progress from 'react-native-progress';
 import Toast from 'react-native-root-toast';
+import { set } from 'd3'
 
 const window = Dimensions.get('window');
 const BleManagerModule = NativeModules.BleManager;
@@ -52,13 +53,14 @@ IndexScreen = (props) => { // const instants = [];
     const [time, settime] = useState(0)
     let sayac = 0;
     // let time = 0;
-    const [maxHeartRate , setmaxHeartRate] = useState()
-    const [minHeartRate , setminHeartRate] = useState()
+    const [maxHeartRate, setmaxHeartRate] = useState()
+    const [minHeartRate, setminHeartRate] = useState()
     var interval;
     const [durations, setdurations] = useState([0])
     const [scanning, setscanning] = useState()
     const [peripherals, setperipherals] = useState([])
     const [sirla, setsirla] = useState(false)
+    const [avg, setavg] = useState(0)
 
     const { state } = useContext(TempContext)
     const { state: { recording, datas, HRa },
@@ -95,6 +97,7 @@ IndexScreen = (props) => { // const instants = [];
     thingsinInterval = () => {
         setHR(HRa)
         var instants = { HR, rpm, time }
+        if(HR > 0)
         addInstant({
             instants: instants
         }, true)
@@ -124,69 +127,25 @@ IndexScreen = (props) => { // const instants = [];
         maxHeartRate < HR ? setheartAttack(true) : setheartAttack(false)
         minHeartRate > HR ? setdetrain(true) : setdetrain(false)
 
-        console.log( maxHeartRate , HR , heartAttack ,detrain)
+        var total = 0
+        for (var i = 0; i < datas.length; i++) {
+            // setavg((datas[i].instants.HR / datas.length) * datas.length)
+            if(datas[i].instants.HR>20)
+            total = total + datas[i].instants.HR
+        }
+        setavg(total/datas.length)
+        console.log(avg , total)
 
 
         if (time % 10 == 0) {
             myHRs.push(HR)
             setclientHRs(myHRs)
         }
-        // time++;
-        // setHR(time)
-        // console.log(HR);
         settime(time + 1)
-        // console.log(time , time);
     }
-    // let HR = 0;
-    //   let endofworkot =10
     intervallama = () => {
-        // time = time
         myInterval = setInterval(() => {
             thingsinInterval();
-            //     HR = HRa
-            // // setHR(HRa)
-            // var instants = {HR,rpm,time}
-            //     addInstant({
-            //         instants: instants
-            //     }, true)
-            //     if (endofworkot === time) {
-            //         setsirla(true)
-            //         let toast = Toast.show('You have done a realy great job!', {
-            //             duration: Toast.durations.LONG,
-            //             position: Toast.positions.CENTER,
-            //             animation: true,
-            //             backgroundColor:"#fff",
-            //             textColor:"#000"
-            //         });
-
-            //     }
-
-            //     if (durations.includes(time)) {
-            //         sayac++;
-            //         setsession(sayac)
-            //         setmaxHR(HRs[sayac - 1].tutukmax)
-            //         maxHeartRate = HRs[sayac - 1].tutukmax
-            //         setminHR(HRs[sayac - 1].tutukmin)
-            //         minHeartRate = HRs[sayac - 1].tutukmin
-            //     }
-
-            //     maxHeartRate < HR ? setheartAttack(true) : setheartAttack(false)
-
-            //     minHeartRate > HR ? setdetrain(true) : setdetrain(false)
-
-
-
-            //     if (time % 10 == 0) {
-            //         myHRs.push(HR)
-            //         setclientHRs(myHRs)
-            //     }
-            //     // setHR(time)
-            //     // console.log(HR);
-            //     time++;
-            //     settime(time)
-            //     console.log(time , time  , HR);
-
-
         }, 1000)
     }
 
@@ -216,7 +175,7 @@ IndexScreen = (props) => { // const instants = [];
                             {maxHR} </Text>
                     </View>
                     <View style={[styles.row, { justifyContent: "center", height: window.width * 0.4 }]}>
-                        {minHeartRate>HRa? <View><Image
+                        {minHeartRate > HRa ? <View><Image
                             style={[styles.tinyLogo, { width: window.width * 0.2, left: window.width * 0.25, bottom: 0, position: "absolute" }]}
                             source={require("../assets/img/up-arrow.png")}
                         /><View style={{ width: window.height * 0.061 }}></View>
@@ -231,7 +190,7 @@ IndexScreen = (props) => { // const instants = [];
                         <Text style={{ position: "absolute", fontSize: window.height * 0.068, paddingBottom: 11 }}>
                             {HRa}
                         </Text>
-                        {maxHeartRate<HRa ?
+                        {maxHeartRate < HRa ?
                             <View><View style={{ width: window.height * 0.061 }}></View><Image
                                 style={[styles.tinyLogo, { width: window.width * 0.1, right: window.width * 0.25, bottom: 0, position: "absolute" }]}
                                 source={require("../assets/img/down-arrow.png")}
@@ -282,16 +241,44 @@ IndexScreen = (props) => { // const instants = [];
                     </TouchableOpacity>
                 </View>}
             <View style={styles.row, {
-                justifyContent: 'center'
+                justifyContent: "space-evenly",
+                flexDirection: "row"
             }}>
-                <Text style={{ fontSize: window.height * 0.021 }}></Text>
-                <Text style={styles.blogName}>
-                    Duration    {Math.floor(time / 60) < 10 ? 0 : null}{Math.floor(time / 60)} : {time % 60 < 10 ? 0 : null}{time % 60}
+                <View>
+                    <Text style={styles.blogName}>Remaining Time</Text>
+
+                    {!isNaN(durations[session - 1] - time) ?
+                        <Text style={styles.blogName}>{Math.floor((durations[session - 1] - time) / 60) < 10 ? 0 : null}{Math.floor((durations[session - 1] - time) / 60)} : {(durations[session - 1] - time) % 60 < 10 ? 0 : null}{(durations[session - 1] - time) % 60}</Text> :
+                        endofworkot - time > -0.1 ? <Text style={styles.blogName}>{(endofworkot - time) / 60 < 10 ? 0 : null}{Math.floor((endofworkot-  time) / 60)} : {(endofworkot - time) % 60 < 10 ? 0 : null}{(endofworkot - time) % 60}</Text> : null}
+                    <Text style={styles.blogName}></Text>
+                </View>
+                <View
+                    style={{
+                        borderLeftWidth: 1,
+                        borderLeftColor: 'gray',
+                    }}
+                />
+                <View>
+                    <Text style={styles.blogName}>
+                        Time
                 </Text>
+                    <Text style={styles.blogName}>{Math.floor(time / 60) < 10 ? 0 : null}{Math.floor(time / 60)} : {time % 60 < 10 ? 0 : null}{time % 60}
+                    </Text>
+                </View>
+                <View
+                    style={{
+                        borderLeftWidth: 1,
+                        borderLeftColor: 'gray',
+                    }}
+                />
+                <View>
+                    <Text style={styles.blogName}>
+                        Avg. HR
+                </Text>
+                    <Text style={styles.blogName}>{isNaN(Math.floor(avg))}
+                    </Text>
+                </View>
             </View>
-            {/* <View>
-            {HR<80?<Text>çok</Text>:<Text>az</Text>}
-        </View> */}
         </View>
     )
 }

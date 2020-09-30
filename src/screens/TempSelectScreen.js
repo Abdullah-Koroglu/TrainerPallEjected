@@ -17,6 +17,20 @@ TempSelectScreen = (props) => {
             </View>
         )
     }
+    switchli = (it) => {
+        switch (it) {
+            case 1:
+                return <Text>beginner</Text>
+            case 2:
+                return <Text>easy</Text>
+            case 3:
+                return <Text>medium</Text>
+            case 4:
+                return <Text>hard</Text>
+            default:
+                return <Text>easy</Text>
+        }
+    }
 
 
     return (
@@ -37,9 +51,15 @@ TempSelectScreen = (props) => {
                             <View style={{ backgroundColor: "#fff", borderRadius: window.height * 0.022, flexDirection: "column", justifyContent: "center", height: window.height / 11 }}>
                                 <View style={{ flexDirection: "row", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ flex: 0.2, paddingLeft: window.width * 0.04 }} />
-                                    <Text style={{ fontSize: window.height * 0.028, flex: 0.7 }}>
-                                        {item.name}
-                                    </Text>
+                                    <View style={{ flex: 0.7 }}>
+                                        <Text style={{ fontSize: window.height * 0.028 }}>
+                                            {item.name}
+                                        </Text><Text>
+                                            {switchli(item.level)}
+                                        </Text>
+                                    </View>
+
+
                                     <AntDesign name="right" size={24} color="black" style={{ paddingTop: window.height * 0.012, flex: 0.1 }} />
                                 </View>
                             </View>
