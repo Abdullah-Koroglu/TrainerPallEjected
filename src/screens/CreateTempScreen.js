@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { Text, View, StyleSheet, Button, TextInput, ScrollView, TouchableOpacity } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { Transition, Transitioning } from "react-native-reanimated"
-import {Context as TempContext} from "../context/TempContext"
+import { Context as TempContext } from "../context/TempContext"
 
 const transition = (
     <Transition.Together>
@@ -13,7 +13,7 @@ const transition = (
 )
 
 CreateTempScreen = () => {
-    const {createTemp} = useContext(TempContext)
+    const { createTemp } = useContext(TempContext)
     const [currentIndex, setcurrentIndex] = useState(null)
     const [min1, setMin] = useState(0)
     const [max1, setMax] = useState(0)
@@ -23,12 +23,13 @@ CreateTempScreen = () => {
     let naber = [];
     let totalTime = 0;
 
-    const submit = () => {
+    const submit = async () => {
         for (let index = 0; index < list.length; index++) {
             totalTime = totalTime + list[index].time
-            naber.push({"instants":{ "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 }})
+            naber.push({ "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } })
         }
         setDatas(naber)
+        return (naber)
     }
 
     let [list, setList] = useState([
@@ -36,13 +37,19 @@ CreateTempScreen = () => {
 
     const ref = React.useRef()
 
+    async function gonder() {
+        const newDatas = await submit()
+        console.log(newDatas)
+        createTemp(name, newDatas)
+    }
+
     return (
         <Transitioning.View
             forceInset={{ top: 'always' }}
             transition={transition}
             ref={ref}
             style={styles.background}>
-            <ScrollView style={{ margin: 20 }} >
+            <ScrollView style={{ margin: 37 }} >
                 <TextInput
                     style={styles.Input}
                     onChangeText={(text) => { setName(text) }}
@@ -55,9 +62,12 @@ CreateTempScreen = () => {
                             key={id}>
                             <View style={{ flex: 0.5 }} >
                                 {currentIndex !== index ?
-                                    <View style={styles.row}><Text style={{fontSize:28}}>
-                                        {min}   -    {max}    -     {time}
+                                    <View style={{}}><Text style={{ fontSize: 28 , color: "white" }}>
+                                        {min}-{max} bpm
                                     </Text>
+                                        <Text style={{ marginLeft: 3  ,  color: "#aaa"}} >
+                                            {time} {time > 1 ? "seconds" : "second"}
+                                        </Text>
                                     </View>
                                     :
                                     <View style={{ margin: 10 }}>
@@ -84,14 +94,14 @@ CreateTempScreen = () => {
                                                 onChangeText={(text) => { setTime(parseInt(text)), list[id - 1].time = parseInt(text) }}
                                                 placeholder="time"
                                             />
-                                            <TouchableOpacity
+                                            {/* <TouchableOpacity
                                                 title="naber"
                                                 style={styles.tus}
                                                 onPress={() => { max = max1, min = min1, time = time1, console.log(list) }}>
-                                                <Text style={{fontSize:23}} >
-                                                    Submit
+                                                <Text style={{ fontSize: 23 }} >
+                                                    
                                                 </Text>
-                                            </TouchableOpacity>
+                                            </TouchableOpacity> */}
                                         </View>
                                     </View>
                                 }
@@ -101,28 +111,26 @@ CreateTempScreen = () => {
                                 setcurrentIndex(index === currentIndex ? null : index)
                             }}>
                                 {index !== currentIndex ?
-                                    <AntDesign name="downcircle" size={32} style={{marginVertical:23}} color="black" /> :
+                                    <AntDesign name="downcircle" size={32} style={{ marginVertical: 23 }} color="black" /> :
                                     <AntDesign name="upcircle" size={32} color="black" />}
                             </TouchableOpacity>
                         </View>
                     )
                 })}
-                <TouchableOpacity style={[styles.tus , {margin:17}]} onPress={() => {
+                <TouchableOpacity style={[styles.tus, { margin: 17 , backgroundColor:"#463c8a" }]} onPress={() => {
                     let newArray = [...list, {
                         id: list.length !== 0 ? list[list.length - 1].id + 1 : 1,
                         max: 0,
                         min: 0,
                         time: 0
                     }]
-                    setList(newArray),
-                        console.log(newArray);
+                    setList(newArray)
+                    //  ,console.log(newArray);
                 }}>
-                    <Text style={{fontSize:23}}>add session</Text>
+                    <Text style={{ fontSize: 23 , color:"white" }}>add session</Text>
 
                 </TouchableOpacity>
-                <Button title="submit" onPress={() => submit()}></Button>
-                <Button title="log" onPress={() => console.log(datas)}></Button>
-                <Button title="create" onPress={() => createTemp(name , datas )}></Button>
+                <Button title="submit" onPress={() => gonder()}></Button>
             </ScrollView>
         </Transitioning.View>
     )
@@ -140,7 +148,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     Input: {
-        fontSize: 23 ,
+        fontSize: 23,
         backgroundColor: "white",
         borderRadius: 4
     },
@@ -161,7 +169,7 @@ const styles = StyleSheet.create({
     tus: {
         alignSelf: "center",
         backgroundColor: "white",
-        borderRadius: 4,
+        borderRadius: 8,
         padding: 5
     },
 
