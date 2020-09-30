@@ -21,3 +21,18 @@ SaveWorkoutScreen               xx
 SigninScreen                    xx
 SignupScreen                    xx
 TempSelectScreen                xx
+
+
+
+            translate
+AccountScreen                       ??            
+CreateTempScreen                    ??
+DeviceSelectScreen- IteminList      ??
+IndexScreen                         ??
+MyWorkoutDetailScreen               ??
+MyWorkoutsListScreen                ??
+SaveWorkoutScreen                   ??
+SigninScreen                        ??
+SignupScreen                        ??
+TempSelectScreen                    ??
+App                                 xx

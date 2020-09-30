@@ -28,6 +28,7 @@ import ExampleScreen from './src/screens/ExampleScreen';
 import Naber from './src/screens/TestiScreen';
 import Naberi from './src/screens/Testi2';
 import BleFunctions from './src/screens/BleFunctions';
+import I18n from "./src/services/translation"
 
 
 const Stack = createStackNavigator();
@@ -91,7 +92,7 @@ function tempFlow(props) {
     >
       <Stack.Screen name="TempSelect" component={TempSelectScreen}
         options={{
-          title: "Select Workout",
+          title: I18n.t('TempSelect'),
           headerTitleAlign: "center",
           headerTintColor: "white",
           headerRight: () =>
@@ -101,7 +102,7 @@ function tempFlow(props) {
         }} />
       <Stack.Screen name="Index" component={IndexScreen}
         options={{
-          title: "Workout",
+          title: I18n.t('Index'),
           headerTitleAlign: "center",
           headerTintColor: "white",
           headerRight: () =>
@@ -111,13 +112,13 @@ function tempFlow(props) {
         }} />
       <Stack.Screen name="CreateTemp" component={CreateTempScreen}
         options={{
-          title: "Create Workout",
+          title: I18n.t('CreateTemp'),
           headerTitleAlign: "center",
           headerTintColor: "white"
         }} />
       <Stack.Screen name="DeviceSelect" component={ExampleScreen}
         options={{
-          title: "Select Device",
+          title: I18n.t('DeviceSelect'),
           headerTitleAlign: "center",
           headerTintColor: "white"
         }} />
@@ -142,13 +143,13 @@ const workoutFlow = () => {
     >
       <Stack.Screen name="MyWorkoutsList" component={MyWorkoutsListScreen}
         options={{
-          title: "My Event History",
+          title: I18n.t('MyWorkoutsList'),
           headerTitleAlign: "center",
           headerTintColor: "white"
         }} />
       <Stack.Screen name="MyWorkoutDetail" component={MyWorkoutDetailScreen}
         options={{
-          title: "Event Detail",
+          title: I18n.t('MyWorkoutDetail'),
           headerTitleAlign: "center",
           headerTintColor: "white"
         }} />
@@ -164,18 +165,18 @@ function MyTabs() {
       inactiveColor="#3e2465"
       barStyle={{ backgroundColor: '#694fad' }}>
       <Tab.Screen name="workoutFlow" component={workoutFlow} options={{
-        tabBarLabel: 'History',
+        tabBarLabel: I18n.t('History'),
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="file-document-outline" color={color} size={24} />
         ),
       }} />
       <Tab.Screen name="tempFlow" component={tempFlow} options={{
-        tabBarLabel: 'Workout',
+        tabBarLabel: I18n.t('Index'),
         tabBarIcon: ({ color }) => (
           <SimpleLineIcons name="fire" color={color} size={24} />
         ),
       }} />
-      <Tab.Screen name="Account" component={AccountScreen} options={{
+      <Tab.Screen name={I18n.t('Account')} component={AccountScreen} options={{
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="account-circle-outline" color={color} size={26} />
         ),
