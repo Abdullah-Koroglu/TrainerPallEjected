@@ -16,7 +16,10 @@ import {
     SafeAreaView,
     TouchableOpacity,
     Switch,
-    Image
+    Image,
+    BackHandler,
+    Alert,
+    BackAndroid
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { LineChart, BarChart } from 'react-native-chart-kit'
@@ -26,6 +29,7 @@ import BleManager from 'react-native-ble-manager';
 import * as Progress from 'react-native-progress';
 import Toast from 'react-native-root-toast';
 import { set } from 'd3'
+import { reset } from 'i18n-js'
 
 const window = Dimensions.get('window');
 const BleManagerModule = NativeModules.BleManager;
@@ -67,7 +71,7 @@ IndexScreen = (props) => { // const instants = [];
         stopRecording,
         startRecording,
         addInstant,
-        createWorkout
+        reset
     } = useContext(WorkoutContext)
     const tempDatas = state.temps.find(t => t._id === _id)
 
@@ -77,6 +81,37 @@ IndexScreen = (props) => { // const instants = [];
         durations.pop()
         console.log(durations, endofworkot);
     }, [])
+
+    useEffect(() => {
+        if (recording === true)
+            BackHandler.addEventListener("hardwareBackPress", handleBackButton)
+        return (() => {
+            BackHandler.removeEventListener("hardwareBackPress", handleBackButton)
+        })
+    }, [recording])
+
+    function handleBackButton() {
+        console.log("pressed");
+        Alert.alert(
+            'Discard Workout?',
+            'If you exit your workout will be discarded. Are you sure?',
+            [
+                { text: "Don't leave", style: 'cancel', onPress: () => { } },
+                {
+                    text: 'Discard',
+                    style: 'destructive',
+                    // If the user confirmed, then we dispatch the action we blocked earlier
+                    // This will continue the action that had triggered the removal of the screen
+                    onPress: () => {
+                        stopRecording()
+                        reset()
+                        props.navigation.pop()
+                    },
+                },
+            ]
+        );
+        return true;
+    }
 
     datalarial = () => {
         for (let a of tempDatas.datas) {
@@ -97,10 +132,10 @@ IndexScreen = (props) => { // const instants = [];
     thingsinInterval = () => {
         setHR(HRa)
         var instants = { HR, rpm, time }
-        if(HR > 0)
-        addInstant({
-            instants: instants
-        }, true)
+        if (HR > 0)
+            addInstant({
+                instants: instants
+            }, true)
         if (endofworkot === time) {
             setsirla(true)
             let toast = Toast.show('You have done a realy great job!', {
@@ -130,11 +165,11 @@ IndexScreen = (props) => { // const instants = [];
         var total = 0
         for (var i = 0; i < datas.length; i++) {
             // setavg((datas[i].instants.HR / datas.length) * datas.length)
-            if(datas[i].instants.HR>20)
-            total = total + datas[i].instants.HR
+            if (datas[i].instants.HR > 20)
+                total = total + datas[i].instants.HR
         }
-        setavg(total/datas.length)
-        console.log(avg , total)
+        setavg(total / datas.length)
+        console.log(avg, total)
 
 
         if (time % 10 == 0) {
@@ -207,23 +242,23 @@ IndexScreen = (props) => { // const instants = [];
             </View>
             {recording ?
                 <View style={styles.row}>
-                    <TouchableOpacity onPress={() => { stopRecording() }}>
+                    <TouchableOpacity
+                        onPress={() => {
+                            Toast.show('Hold to pause', {
+                                duration: Toast.durations.LONG,
+                                position: Toast.positions.BOTTOM,
+                                animation: true,
+                                backgroundColor: "#fff",
+                                textColor: "#000"
+                            });
+                        }}
+                        onLongPress={() => { stopRecording() }}>
                         <View style={styles.cycleButton}>
                             <Feather name='pause' size={window.height * 0.04} color='white' />
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => {
-                        stopRecording();
-                        props.navigation.navigate('SaveWorkout')
-                    }}>
-                        <View style={styles.emptyCycleButton}>
-                            <Text style={{ color: '#694fad' }}>
-                                SAVE
-                    </Text>
-                        </View>
-                    </TouchableOpacity>
                 </View> : <View style={styles.row}>
-                    <TouchableOpacity onPress={() => {
+                    <TouchableOpacity onPressIn={() => {
                         // HR ==! 0 ?
                         startRecording()
                         // :Toast.show('You should connect a HR band first.', {
@@ -239,6 +274,29 @@ IndexScreen = (props) => { // const instants = [];
                                 style={styles.playButton} />
                         </View>
                     </TouchableOpacity>
+                    {baslatilmis ?
+                        <TouchableOpacity
+                            onPress={() => {
+                                Toast.show('Hold to Save', {
+                                    duration: Toast.durations.LONG,
+                                    position: Toast.positions.BOTTOM,
+                                    animation: true,
+                                    backgroundColor: "#fff",
+                                    textColor: "#000"
+                                });
+                            }}
+                            onLongPress={() => {
+                                props.navigation.navigate('SaveWorkout')
+                            }}>
+                            <View style={styles.emptyCycleButton}>
+                                <Text style={{ color: '#694fad' }}>
+                                    SAVE
+                    </Text>
+                            </View>
+                        </TouchableOpacity>
+                        : null
+                    }
+
                 </View>}
             <View style={styles.row, {
                 justifyContent: "space-evenly",
@@ -249,7 +307,7 @@ IndexScreen = (props) => { // const instants = [];
 
                     {!isNaN(durations[session - 1] - time) ?
                         <Text style={styles.blogName}>{Math.floor((durations[session - 1] - time) / 60) < 10 ? 0 : null}{Math.floor((durations[session - 1] - time) / 60)} : {(durations[session - 1] - time) % 60 < 10 ? 0 : null}{(durations[session - 1] - time) % 60}</Text> :
-                        endofworkot - time > -0.1 ? <Text style={styles.blogName}>{(endofworkot - time) / 60 < 10 ? 0 : null}{Math.floor((endofworkot-  time) / 60)} : {(endofworkot - time) % 60 < 10 ? 0 : null}{(endofworkot - time) % 60}</Text> : null}
+                        endofworkot - time > -0.1 ? <Text style={styles.blogName}>{(endofworkot - time) / 60 < 10 ? 0 : null}{Math.floor((endofworkot - time) / 60)} : {(endofworkot - time) % 60 < 10 ? 0 : null}{(endofworkot - time) % 60}</Text> : null}
                     <Text style={styles.blogName}></Text>
                 </View>
                 <View

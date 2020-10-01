@@ -13,47 +13,68 @@ import {
   FlatList,
   Dimensions,
   Button,
-  SafeAreaView
+  SafeAreaView,
+  BackHandler,
+  Alert
 } from 'react-native';
-import { Context as WorkoutContext } from '../context/WorkoutContext'
-import ExampleScreen from './ExampleScreen';
-import IndexScreen from "./IndexScreen"
-import {ble} from './BleFunctions'
-
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default class Naber extends Component {
-  static contextType = WorkoutContext
 
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
 
     this.state = {
+      petname:"naber"
     }
   }
 
+  componentDidMount() {
+    BackHandler.addEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  componentWillUnmount() {
+    console.log("unmount");
+    BackHandler.removeEventListener('hardwareBackPress', this.handleBackButton);
+  }
+
+  handleBackButton(state) {
+    console.log("pressed");
+    console.log(state)
+    Alert.alert(
+      'Discard workout?',
+      'If you exit the workout will be discarded',
+      [
+        { text: "Don't leave", style: 'cancel', onPress: () => { } },
+        {
+          text: 'Discard',
+          style: 'destructive',
+          // If the user confirmed, then we dispatch the action we blocked earlier
+          // This will continue the action that had triggered the removal of the screen
+          onPress: () => {
+            this.props.navigation.pop()
+          },
+        },
+      ]
+    );
+
+    return true;
+
+  }
+
+
+
+
 
   render() {
-    // const { state , setHR  } = this.context;
-    // let hr = HR
-    if (this.context.state.HR) {
-      return (
-        // <WorkoutContext.Consumer>
-        <View style={styles.container}>
-          <Text style={{ fontSize: 50 }}>
-            {this.context.state.HR}
-          </Text>
-          <Button title="Go" onPress={() => ble.testi()}></Button>
-          {/* <Button title="log" onPress={() => console.log(HR)}></Button> */}
-        </View>
-        // </WorkoutContext.Consumer>
-      )
-    } else {
-      return (
-        <ExampleScreen>
+    return (
+      <View>
+        <TouchableOpacity onPress={()=>this.handleBackButton()}>
+          <Text>Back button example</Text>
+        </TouchableOpacity>
 
-        </ExampleScreen>
-      )
-    }
+      </View>
+    )
   }
 }
 

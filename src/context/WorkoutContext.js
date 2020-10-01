@@ -16,7 +16,7 @@ const trackReducer = (state , action) =>{
         case 'add_instant':
         return{...state , datas : [...state.datas , action.payload]}
         case 'reset':
-            return {...state , name:'' , datas:[]}
+            return {...state , name:'' , datas:[] , HRa:0 , currentInstant:null}
         case 'set_hr':
             return{ ... state , HRa : action.payload}
         default:

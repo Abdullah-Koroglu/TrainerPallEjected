@@ -17,6 +17,7 @@ import {
 } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { Context as WorkoutContext } from '../context/WorkoutContext'
+import Toast from 'react-native-root-toast'
 const window = Dimensions.get('window');
 
 const BleManagerModule = NativeModules.BleManager;
@@ -156,6 +157,13 @@ export default class BleFunctions extends Component {
                     let peripherals = this.state.peripherals;
                     let p = peripherals.get(peripheral.id);
                     peripheral.connected = true
+                    Toast.show('You have done a realy great job!', {
+                        duration: Toast.durations.LONG,
+                        position: Toast.positions.CENTER,
+                        animation: true,
+                        backgroundColor: "#fff",
+                        textColor: "#000"
+                    });
                     if (p) {
                         p.connected = true;
                         peripherals.set(peripheral.id, p);
