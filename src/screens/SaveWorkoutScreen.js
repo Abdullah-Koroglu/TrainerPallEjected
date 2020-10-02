@@ -45,7 +45,7 @@ SaveWorkoutScreen = ({ navigation }) => {
     return (
         <SafeAreaView style={styles.background} forceInset={{ top: 'always' }}>
             <View style={{
-                backgroundColor: "#694fad", height: window.height * 0.4, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
+                backgroundColor: "#00C5C0", height: window.height * 0.4, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
                 borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
             }}>
                 <Text style={{ alignSelf: "center", color: "white", paddingBottom:window.height*0.03}}>To see the details later on save the activity.</Text>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         paddingLeft: window.height * 0.023,
         paddingTop: window.height * 0.013,
         color: '#ffffff',
-        backgroundColor: "#694fad",
+        backgroundColor: "#00C5C0",
         fontSize: window.height * 0.03,
         alignSelf: 'center',
         borderRadius: window.height * 0.023,

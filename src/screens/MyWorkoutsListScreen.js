@@ -36,7 +36,7 @@ MyWorkoutsListScreen = (props) => {
         //, console.log(state.recording) 
         , [state.recording])
     return (
-        <View style={{ backgroundColor: "#8b6fcf", flex: 1 }}>
+        <View style={{ backgroundColor: "#00d8d3", flex: 1 }}>
             <View style={styles.topFigure}>
             </View>
             <ScrollView
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     topFigure: {
         height: window.height * 0.6,
         borderBottomLeftRadius: window.width,
-        backgroundColor: "#694fad",
+        backgroundColor: "#00C5C0",
         position: "absolute",
         left: 0,
         width: window.width,

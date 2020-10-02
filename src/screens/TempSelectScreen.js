@@ -50,7 +50,7 @@ TempSelectScreen = (props) => {
 
 
     return (
-        <View style={{ backgroundColor: "#694fad", flex: 1 }}>
+        <View style={{ backgroundColor: "#00C5C0", flex: 1 }}>
             <View style={styles.topFigure}>
             </View>
             <ScrollView
@@ -95,7 +95,7 @@ TempSelectScreen = (props) => {
     )
 }
 
-"#694fad"
+"#00C5C0"
 const styles = StyleSheet.create({
     blogName: {
         paddingTop: window.height * 0.01,
@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     }, topFigure: {
         height: window.height * 0.6,
         borderBottomLeftRadius: window.width,
-        backgroundColor: "#8b6fcf",
+        backgroundColor: "#00d8d3",
         position: "absolute",
         left: 0,
         width: window.width,

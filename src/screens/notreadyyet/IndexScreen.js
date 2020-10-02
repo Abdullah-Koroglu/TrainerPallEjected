@@ -237,7 +237,7 @@ IndexScreen = (props) => { // const instants = [];
                     props.navigation.navigate('SaveWorkout')
                 }}>
                     <View style={styles.emptyCycleButton}>
-                        <Text style={{color: '#694fad'}}>
+                        <Text style={{color: '#00C5C0'}}>
                             SAVE
                         </Text>
                     </View>
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
         width: 78,
         height: 78,
         borderRadius: 100 / 2,
-        backgroundColor: '#694fad',
+        backgroundColor: '#00C5C0',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -302,7 +302,7 @@ const styles = StyleSheet.create({
         width: 78,
         height: 78,
         borderRadius: 100 / 2,
-        borderColor: '#694fad',
+        borderColor: '#00C5C0',
         borderWidth: 2,
         alignItems: 'center',
         justifyContent: 'center'

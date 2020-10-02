@@ -238,7 +238,7 @@ IndexScreen = (props) => { // const instants = [];
                 </View>
             </View>
             <View style={styles.row}>
-                <Progress.Bar progress={sirla === true ? 1 : (session - 2) / (durations.length)} width={window.width * 0.93} animated={false} color={"#694fad"} />
+                <Progress.Bar progress={sirla === true ? 1 : (session - 2) / (durations.length)} width={window.width * 0.93} animated={false} color={"#00C5C0"} />
             </View>
             {recording ?
                 <View style={styles.row}>
@@ -289,7 +289,7 @@ IndexScreen = (props) => { // const instants = [];
                                 props.navigation.navigate('SaveWorkout')
                             }}>
                             <View style={styles.emptyCycleButton}>
-                                <Text style={{ color: '#694fad' }}>
+                                <Text style={{ color: '#00C5C0' }}>
                                     SAVE
                     </Text>
                             </View>
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
         width: window.height * 0.088,
         height: window.height * 0.088,
         borderRadius: 1000,
-        backgroundColor: '#694fad',
+        backgroundColor: '#00C5C0',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
         width: window.height * 0.088,
         height: window.height * 0.088,
         borderRadius: 1000,
-        borderColor: '#694fad',
+        borderColor: '#00C5C0',
         borderWidth: 2,
         alignItems: 'center',
         justifyContent: 'center'

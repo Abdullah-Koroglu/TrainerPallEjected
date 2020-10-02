@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity , Text} from 'react-native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
@@ -19,7 +19,7 @@ import SignupScreen from './src/screens/SignupScreen'
 import SigninScreen from './src/screens/SigninScreen'
 import MyWorkoutsListScreen from './src/screens/MyWorkoutsListScreen'
 import MyWorkoutDetailScreen from './src/screens/MyWorkoutDetailScreen'
-import CreateTempScreen from './src/screens/CreateTempScreen'
+import CreateTempScreen, { crtScrFunc } from './src/screens/CreateTempScreen'
 import AccountScreen from './src/screens/AccountScreen'
 import SaveWorkoutScreen from './src/screens/SaveWorkoutScreen'
 import DeviceSelectScreen from './src/screens/DeviceSelectScreen'
@@ -41,7 +41,7 @@ const loginFlow = () => {
       mode={"card"}
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#694fad',
+          backgroundColor: '#00C5C0',
         }
       }}
     >
@@ -64,7 +64,7 @@ const testFlow = () => {
       mode={"card"}
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#694fad',
+          backgroundColor: '#00C5C0',
         }
       }}
     >
@@ -86,7 +86,7 @@ function tempFlow(props) {
       mode={"card"}
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#694fad',
+          backgroundColor: '#00C5C0',
         }
       }}
     >
@@ -114,7 +114,7 @@ function tempFlow(props) {
         options={{
           title: I18n.t('CreateTemp'),
           headerTitleAlign: "center",
-          headerTintColor: "white"
+          headerTintColor: "white",
         }} />
       <Stack.Screen name="DeviceSelect" component={ExampleScreen}
         options={{
@@ -137,7 +137,7 @@ const workoutFlow = () => {
       mode={"card"}
       screenOptions={{
         headerStyle: {
-          backgroundColor: '#694fad',
+          backgroundColor: '#00C5C0',
         }
       }}
     >
@@ -161,9 +161,9 @@ function MyTabs() {
   return (
     <Tab.Navigator
       initialRouteName="workoutFlow"
-      activeColor="#f0edf6"
+      activeColor="#fff"
       inactiveColor="#3e2465"
-      barStyle={{ backgroundColor: '#694fad' }}>
+      barStyle={{ backgroundColor: '#00C5C0' }}>
       <Tab.Screen name="workoutFlow" component={workoutFlow} options={{
         tabBarLabel: I18n.t('History'),
         tabBarIcon: ({ color }) => (

@@ -11,7 +11,7 @@ const IteminList = (props) => {
         <>
             {props.name ?
                 <TouchableOpacity onPress={props.onPress} >
-                    <Card borderRadius={15} containerStyle={{ padding: window.height*0.012, backgroundColor: "#efe9f2" , justifyContent:"center"  }}>
+                    <Card borderRadius={15} containerStyle={{ padding: window.height*0.012, backgroundColor: "#d2f9f8" , justifyContent:"center"  }}>
                         <View style={{ flexDirection: "row", paddingVertical: window.height*0.009 ,alignSelf:"center" }}>
                             <View style={styles.circleIcon}>
                                 <Image

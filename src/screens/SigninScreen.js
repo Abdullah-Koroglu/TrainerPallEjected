@@ -18,7 +18,7 @@ SigninScreen = ({ navigation }) => {
 
     return (<SafeAreaView style={styles.background}>
         <View style={{
-            backgroundColor: "#694fad", height: window.height * 0.5, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
+            backgroundColor: "#00C5C0", height: window.height * 0.5, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
             borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
         }}>
             {/* <MaterialCommunityIcons name="bike" size={100} color="#fff" style={{paddingTop:window.height*0.1}} /> */}
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     },
     // submitButton: {
     //     paddingTop: window.height,
-    //     color: '#694fad',
+    //     color: '#00C5C0',
     //     fontSize: 28,
     //     alignSelf: 'center'
     // },

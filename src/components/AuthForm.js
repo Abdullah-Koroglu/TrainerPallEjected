@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     },
     submitButton: {
         paddingTop: window.height * 0.008,
-        color: '#694fad',
+        color: '#00C5C0',
         fontSize: window.height * 0.034,
         alignSelf: 'center'
     },
