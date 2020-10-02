@@ -79,6 +79,7 @@ CreateTempScreen = (props) => {
                     onChangeText={(text) => { setName(text) }}
                     placeholder="name"
                     placeholderTextColor="#fff"
+                    maxLength={23}
                 />
             <ScrollView style={{ margin: 37 }} >
                 {list.map(({ id, min, max, time }, index) => {

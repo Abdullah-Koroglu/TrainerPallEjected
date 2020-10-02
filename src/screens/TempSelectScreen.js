@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions , RefreshControl , ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, ScrollView } from 'react-native'
 import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -33,19 +33,25 @@ TempSelectScreen = (props) => {
             </View>
         )
     }
-    switchli = (it) => {
-        switch (it) {
-            case 1:
-                return <Text>beginner</Text>
-            case 2:
-                return <Text>easy</Text>
-            case 3:
-                return <Text>medium</Text>
-            case 4:
-                return <Text>hard</Text>
-            default:
-                return <Text>easy</Text>
-        }
+    // switchli = (it) => {
+    //     switch (it) {
+    //         case 1:
+    //             return <Text>beginner</Text>
+    //         case 2:
+    //             return <Text>easy</Text>
+    //         case 3:
+    //             return <Text>medium</Text>
+    //         case 4:
+    //             return <Text>hard</Text>
+    //         default:
+    //             return <Text>easy</Text>
+    //     }
+    // }
+
+    function datele(date) {
+        let newDate = new Date(date)
+        console.log(newDate.getFullYear());
+        return newDate
     }
 
 
@@ -61,36 +67,35 @@ TempSelectScreen = (props) => {
                         onRefresh={onRefresh} />
                 }
             >
-            <FlatList
-                style={{ paddingHorizontal: window.height * 0.022 }}
-                data={state.temps}
-                ListEmptyComponent={_listEmptyComponent}
-                keyExtractor={item => item._id}
-                renderItem={({ item }) => {
-                    return (
-                        <TouchableOpacity
-                            style={{ paddingTop: window.height * 0.022, justifyContent: "center", }}
-                            onPress={() => props.navigation.navigate('Index', { _id: item._id })
-                            }>
-                            <View style={{ backgroundColor: "#fff", borderRadius: window.height * 0.022, flexDirection: "column", justifyContent: "center", height: window.height / 11 }}>
-                                <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                                    <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ flex: 0.2, paddingLeft: window.width * 0.04 }} />
-                                    <View style={{ flex: 0.7 }}>
-                                        <Text style={{ fontSize: window.height * 0.028 }}>
-                                            {item.name}
-                                        </Text><Text>
-                                            {switchli(item.level)}
-                                        </Text>
+                <FlatList
+                    style={{ paddingHorizontal: window.height * 0.022 }}
+                    data={state.temps}
+                    ListEmptyComponent={_listEmptyComponent}
+                    keyExtractor={item => item._id}
+                    renderItem={({ item }) => {
+                        return (
+                            <TouchableOpacity
+                                style={{ paddingTop: window.height * 0.022, justifyContent: "center", }}
+                                onPress={() => props.navigation.navigate('Index', { _id: item._id })
+                                }>
+                                <View style={{ backgroundColor: "#fff", borderRadius: window.height * 0.022, flexDirection: "column", justifyContent: "center", height: window.height / 11 }}>
+                                    <View style={{ flexDirection: "row", justifyContent: "center" }}>
+                                        <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ alignSelf:"center" ,flex: 0.2, paddingLeft: window.width * 0.04 }} />
+                                        <View style={{alignContent:"flex-start", flex: 0.93 }}>
+                                            <Text style={{ fontSize: window.height * 0.028 }}>
+                                                {item.name}
+                                            </Text>
+                                            {item.date ? 
+                                            <Text style={{fontSize:18}}>created at {datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
+                                            : null}
+                                        </View>
+                                        <AntDesign name="right" size={24} color="black" style={{ alignSelf:"center",paddingTop: window.height * 0.012, flex: 0.1 }} />
                                     </View>
-
-
-                                    <AntDesign name="right" size={24} color="black" style={{ paddingTop: window.height * 0.012, flex: 0.1 }} />
                                 </View>
-                            </View>
-                        </TouchableOpacity>
-                    )
-                }}
-            /></ScrollView>
+                            </TouchableOpacity>
+                        )
+                    }}
+                /></ScrollView>
         </View>
     )
 }
