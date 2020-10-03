@@ -7,6 +7,7 @@ import navigate from '../navigationRef'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import I18n from "../services/translation"
 
 
 MyWorkoutsListScreen = (props) => {
@@ -74,7 +75,7 @@ MyWorkoutsListScreen = (props) => {
                                             <Text style={{ fontSize: window.height * 0.028, flex: 0.87, alignSelf: "center" }}>
                                                 {item.name}
                                             </Text>{datele(item.date).getFullYear() !== 1970 ?
-                                                <Text style={{ fontSize: 18 }}>created at {datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text>
+                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text>
                                                 : null}
                                             <AntDesign name="right" size={24} color="black" style={{ alignSelf: "center", paddingTop: window.height * 0.011, flex: 0.1 }} />
                                         </View>

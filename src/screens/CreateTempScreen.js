@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, Button, TextInput, ScrollView, TouchableOpacity
 import { AntDesign } from '@expo/vector-icons';
 import { Transition, Transitioning } from "react-native-reanimated"
 import { Context as TempContext } from "../context/TempContext"
+import I18n from "../services/translation"
+
 
 const transition = (
     <Transition.Together>
@@ -29,7 +31,7 @@ CreateTempScreen = (props) => {
                 <TouchableOpacity
                   onPress={() => gonder()}>
                     <Text style={{fontSize:23, color:"#fff" , marginRight:8}}>
-                      Save
+                    {I18n.t('SAVEbtn')}
                     </Text>
                 </TouchableOpacity>)
         });
@@ -77,7 +79,7 @@ CreateTempScreen = (props) => {
                 <TextInput
                     style={styles.name}
                     onChangeText={(text) => { setName(text) }}
-                    placeholder="name"
+                    placeholder={I18n.t('name')}
                     placeholderTextColor="#fff"
                     maxLength={23}
                 />
@@ -104,10 +106,10 @@ CreateTempScreen = (props) => {
                             <View style={{ flex: 0.69 }} >
                                 {currentIndex !== index ?
                                     <View style={{}}><Text style={{ fontSize: 28 , color: "black" }}>
-                                        {min}-{max} bpm
+                                        {min}-{max} {I18n.t('bpm')}
                                     </Text>
                                         <Text style={{ marginLeft: 3  ,  color: "#777"}} >
-                                            {time} {time > 1 ? "seconds" : "second"}
+                                            {time} {time > 1 ? I18n.t('time') : I18n.t('time')}
                                         </Text>
                                     </View>
                                     :
@@ -131,7 +133,7 @@ CreateTempScreen = (props) => {
                                                 style={styles.Input}
                                                 keyboardType='numeric'
                                                 onChangeText={(text) => { setTime(parseInt(text)), list[id - 1].time = parseInt(text) }}
-                                                placeholder="time"
+                                                placeholder={I18n.t('time')}
                                             />
                                         </View>
                                     </View>
@@ -159,7 +161,7 @@ CreateTempScreen = (props) => {
                     //  ,console.log(newArray);
                 }}>
                     <AntDesign name="pluscircleo" size={24} color="#999" style={{alignSelf:"center" , margin:3}}/>
-                    <Text style={{ fontSize: 23 , marginBottom:3 , marginRight:3 }}>add session</Text>
+                    <Text style={{ fontSize: 23 , marginBottom:3 , marginRight:3 }}>{I18n.t('AddSession')}</Text>
                 </TouchableOpacity>
             </ScrollView>
         </Transitioning.View>

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { View, StyleSheet, TouchableOpacity , Dimensions } from 'react-native'
 import { Input, Text } from "react-native-elements"
+import I18n from "../services/translation"
+
 
 const window = Dimensions.get('window');
 
@@ -14,7 +16,7 @@ AuthForm = ({ headerText, submitButtonText, onSubmit, children }) => {
             style={{fontSize:window.height*0.02}}
             inputContainerStyle={{height:window.height*0.033}}
             labelStyle={{fontSize:window.height*0.017}}
-            label='Email'
+            label={I18n.t('Email')}
             value={email}
             onChangeText={setEmail}
             autoCapitalize='none'
@@ -23,7 +25,7 @@ AuthForm = ({ headerText, submitButtonText, onSubmit, children }) => {
             style={{fontSize:window.height*0.02}}
             inputContainerStyle={{height:window.height*0.033}}
             labelStyle={{fontSize:window.height*0.017}}
-            label='Password'
+            label={I18n.t('Password')}
             value={password}
             onChangeText={setPassword}
             autoCapitalize='none'

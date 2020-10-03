@@ -28,8 +28,8 @@ import { Context as WorkoutContext } from '../context/WorkoutContext'
 import BleManager from 'react-native-ble-manager';
 import * as Progress from 'react-native-progress';
 import Toast from 'react-native-root-toast';
-import { set } from 'd3'
-import { reset } from 'i18n-js'
+import I18n from "../services/translation"
+
 
 const window = Dimensions.get('window');
 const BleManagerModule = NativeModules.BleManager;
@@ -93,12 +93,12 @@ IndexScreen = (props) => { // const instants = [];
     function handleBackButton() {
         console.log("pressed");
         Alert.alert(
-            'Discard Workout?',
-            'If you exit your workout will be discarded. Are you sure?',
+            I18n.t("discardQ"),
+            I18n.t("AlertQ"),
             [
-                { text: "Don't leave", style: 'cancel', onPress: () => { } },
+                { text: I18n.t("dontLeave"), style: 'cancel', onPress: () => { } },
                 {
-                    text: 'Discard',
+                    text: I18n.t("Discard"),
                     style: 'destructive',
                     // If the user confirmed, then we dispatch the action we blocked earlier
                     // This will continue the action that had triggered the removal of the screen
@@ -244,7 +244,7 @@ IndexScreen = (props) => { // const instants = [];
                 <View style={styles.row}>
                     <TouchableOpacity
                         onPress={() => {
-                            Toast.show('Hold to pause', {
+                            Toast.show(I18n.t('HoldtoPause'), {
                                 duration: Toast.durations.LONG,
                                 position: Toast.positions.BOTTOM,
                                 animation: true,
@@ -277,7 +277,7 @@ IndexScreen = (props) => { // const instants = [];
                     {baslatilmis ?
                         <TouchableOpacity
                             onPress={() => {
-                                Toast.show('Hold to Save', {
+                                Toast.show(I18n.t("HoldtoSave"), {
                                     duration: Toast.durations.LONG,
                                     position: Toast.positions.BOTTOM,
                                     animation: true,
@@ -289,9 +289,7 @@ IndexScreen = (props) => { // const instants = [];
                                 props.navigation.navigate('SaveWorkout')
                             }}>
                             <View style={styles.emptyCycleButton}>
-                                <Text style={{ color: '#00C5C0' }}>
-                                    SAVE
-                    </Text>
+                                <Text style={{ color: '#00C5C0' }}>{I18n.t("SAVEbtn")}</Text>
                             </View>
                         </TouchableOpacity>
                         : null
@@ -303,7 +301,7 @@ IndexScreen = (props) => { // const instants = [];
                 flexDirection: "row"
             }}>
                 <View>
-                    <Text style={styles.blogName}>Remaining Time</Text>
+                    <Text style={styles.blogName}>{I18n.t("Time")}</Text>
 
                     {!isNaN(durations[session - 1] - time) ?
                         <Text style={styles.blogName}>{Math.floor((durations[session - 1] - time) / 60) < 10 ? 0 : null}{Math.floor((durations[session - 1] - time) / 60)} : {(durations[session - 1] - time) % 60 < 10 ? 0 : null}{(durations[session - 1] - time) % 60}</Text> :
@@ -318,8 +316,8 @@ IndexScreen = (props) => { // const instants = [];
                 />
                 <View>
                     <Text style={styles.blogName}>
-                        Time
-                </Text>
+                        {I18n.t("Time")}
+                    </Text>
                     <Text style={styles.blogName}>{Math.floor(time / 60) < 10 ? 0 : null}{Math.floor(time / 60)} : {time % 60 < 10 ? 0 : null}{time % 60}
                     </Text>
                 </View>
@@ -331,8 +329,8 @@ IndexScreen = (props) => { // const instants = [];
                 />
                 <View>
                     <Text style={styles.blogName}>
-                        Avg. HR
-                </Text>
+                        {I18n.t("AvgHR")}
+                    </Text>
                     <Text style={styles.blogName}>{isNaN(Math.floor(avg))}
                     </Text>
                 </View>

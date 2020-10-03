@@ -3,6 +3,8 @@ import { Context as authContext } from '../context/AuthContext'
 import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
 import { Card } from 'react-native-elements'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import I18n from "../services/translation"
+
 
 import AuthForm from '../components/AuthForm'
 import { color } from 'react-native-reanimated';
@@ -39,10 +41,10 @@ SignupScreen = ({ navigation }) => {
             <View style={styles.Card}>
                 <AuthForm
                     headerText='Trainer Pall'
-                    submitButtonText='Sign Up'
+                    submitButtonText={I18n.t('SignUp')}
                     onSubmit={signup}
                 ><TouchableOpacity onPress={() => navigation.navigate('Signin')}>
-                        <Text style={styles.gotoButton}>Already have an account? Sign in.</Text>
+                        <Text style={styles.gotoButton}>{I18n.t('haveAccount')}</Text>
                     </TouchableOpacity>
                 </AuthForm>
             </View>

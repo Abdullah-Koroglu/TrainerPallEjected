@@ -1,6 +1,8 @@
 import React, { useContext } from 'react'
 import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
 import { Context } from '../context/AuthContext'
+import I18n from "../services/translation"
+
 
 const window = Dimensions.get('window');
 import AuthForm from '../components/AuthForm'
@@ -29,11 +31,11 @@ SigninScreen = ({ navigation }) => {
             <View style={styles.Card}>
                 <AuthForm
                     headerText='Trainer Pall'
-                    submitButtonText='Sign In'
+                    submitButtonText={I18n.t('SignIn')}
                     onSubmit={({ email, password }) => signin({ email, password })}
                 >
                     <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                        <Text style={styles.gotoButton}>Haven't signed up yet? Sign Up.</Text>
+                        <Text style={styles.gotoButton}>{I18n.t('havenotAcconut')}</Text>
                     </TouchableOpacity>
                 </AuthForm></View>
         </View>

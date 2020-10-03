@@ -1,7 +1,7 @@
 import React , { useContext }from 'react'
 import {Text , View , StyleSheet , Button, TouchableHighlight} from 'react-native'
 import { SafeAreaView } from "react-navigation";
-
+import I18n from "../services/translation"
 import { Context } from '../context/AuthContext'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -17,7 +17,7 @@ AccountScreen = (props) =>{
     return(<View style={styles.container}>
             <SafeAreaView forceInset={{top:'always'}}>
                 <TouchableOpacity onPress={()=>{signout()}}>
-                    <Text style={styles.sigoutButton}>signout</Text>
+                    <Text style={styles.sigoutButton}>{I18n.t('Signout')}</Text>
                 </TouchableOpacity>
             </SafeAreaView>
         </View>)

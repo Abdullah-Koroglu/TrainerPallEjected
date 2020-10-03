@@ -3,6 +3,8 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, TextInput, Alert, Dim
 import { SafeAreaView } from "react-navigation";
 import { CommonActions } from '@react-navigation/native';
 import { Input } from "react-native-elements"
+import I18n from "../services/translation"
+
 
 
 const window = Dimensions.get('window');
@@ -48,15 +50,15 @@ SaveWorkoutScreen = ({ navigation }) => {
                 backgroundColor: "#00C5C0", height: window.height * 0.4, width: window.height * 1.4, borderBottomEndRadius: window.height * 4.8,
                 borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
             }}>
-                <Text style={{ alignSelf: "center", color: "white", paddingBottom:window.height*0.03}}>To see the details later on save the activity.</Text>
+                <Text style={{ alignSelf: "center", color: "white", paddingBottom:window.height*0.03}}>{I18n.t('saveDetail')}</Text>
             </View><View style={styles.container}>
                 <View style={styles.Card}>
-                    <Text style={styles.headerText}>Save the activity</Text>
+                    <Text style={styles.headerText}>{I18n.t('saveActivity')}</Text>
                         <Input
                             style={{ fontSize: window.height * 0.02 }}
                             inputContainerStyle={{ height: window.height * 0.034 , marginHorizontal:window.height * 0.02}}
                             labelStyle={{ fontSize: window.height * 0.017 , marginHorizontal:window.height * 0.02}}
-                            label='Activity Name'
+                            label={I18n.t('ActivityName')}
                             value={activityName}
                             onChangeText={setactivityName}
                         ></Input>
@@ -65,9 +67,7 @@ SaveWorkoutScreen = ({ navigation }) => {
                             changeName(activityName),
                                 setAlertFlag(true)
                         }}>
-                        <Text style={styles.Button} >
-                            Save Activity
-            </Text>
+                        <Text style={styles.Button} >{I18n.t('saveActivity')}</Text>
                     </TouchableOpacity>
                 </View>
             </View>

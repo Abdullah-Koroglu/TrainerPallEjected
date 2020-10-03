@@ -4,6 +4,8 @@ import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { AntDesign } from '@expo/vector-icons';
+import I18n from "../services/translation"
+
 
 TempSelectScreen = (props) => {
     const { state, fetchTemp } = useContext(TempContext)
@@ -85,7 +87,7 @@ TempSelectScreen = (props) => {
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                            <Text style={{fontSize:18}}>created at {datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
+                                            <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
                                             : null}
                                         </View>
                                         <AntDesign name="right" size={24} color="black" style={{ alignSelf:"center",paddingTop: window.height * 0.012, flex: 0.1 }} />

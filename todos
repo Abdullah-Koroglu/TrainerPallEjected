@@ -25,16 +25,16 @@ TempSelectScreen                xx
 
 
             translate
-AccountScreen                       ??            
-CreateTempScreen                    ??
-DeviceSelectScreen- IteminList      ??
-IndexScreen                         ??
-MyWorkoutDetailScreen               ??
-MyWorkoutsListScreen                ??
-SaveWorkoutScreen                   ??
-SigninScreen                        ??
-SignupScreen                        ??
-TempSelectScreen                    ??
+AccountScreen                       xx            
+CreateTempScreen                    XX
+ExampleScreen- IteminList           xx
+IndexScreen                         xx
+MyWorkoutDetailScreen               xx
+MyWorkoutsListScreen                xx
+SaveWorkoutScreen                   xx
+SigninScreen                        xx
+SignupScreen                        XX
+TempSelectScreen                    xx
 App                                 xx
 
 progressbarı geliştir

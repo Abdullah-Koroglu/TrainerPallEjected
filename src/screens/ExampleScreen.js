@@ -20,6 +20,8 @@ import BleManager from 'react-native-ble-manager';
 import { Context as WorkoutContext } from '../context/WorkoutContext'
 import IteminList from '../components/IteminList';
 import {ble} from './BleFunctions'
+import I18n from "../services/translation"
+
 
 
 
@@ -238,7 +240,7 @@ export default class ExampleScreen extends Component {
       <SafeAreaView style={styles.container}>
         <View style={styles.container}>
           <View style={{ margin: 10 }}>
-            <Text style={{ fontSize: window.height * 0.028, fontWeight: "bold" }}>Toggle for Scanning</Text>
+            <Text style={{ fontSize: window.height * 0.028, fontWeight: "bold" }}>{I18n.t('Toggle')}</Text>
             <Switch
               trackColor={{ false: "#eeeeee", true: "#749f9c" }}
               thumbColor={this.state.scanning ? "#317873" : "#f4f3f4"}

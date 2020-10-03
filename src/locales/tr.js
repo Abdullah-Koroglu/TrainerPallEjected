@@ -6,6 +6,14 @@ export default {
     Index: "İdman",
     TempSelect: "İdman Seç",
     History: "Geçmiş",
-    Account: "Hesap"
+    Account: "Hesap",
+    haveAccount : "Zaten hesabın var mı? Giriş yap.",
+    Email : "Email",
+    Password : "Şifre",
+    SignUp : "Kaydol",
+    SignIn : "Giriş",
+    havenotAcconut:'Hesabın yok mu? Giriş yap.'
+
+
 
 }
