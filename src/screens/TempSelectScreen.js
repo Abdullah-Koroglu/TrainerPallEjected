@@ -50,7 +50,6 @@ TempSelectScreen = (props) => {
 
     function datele(date) {
         let newDate = new Date(date)
-        console.log(newDate.getFullYear());
         return newDate
     }
 
@@ -85,7 +84,7 @@ TempSelectScreen = (props) => {
                                             <Text style={{ fontSize: window.height * 0.028 }}>
                                                 {item.name}
                                             </Text>
-                                            {item.date ? 
+                                            {datele(item.date).getFullYear() !== 1970 ?
                                             <Text style={{fontSize:18}}>created at {datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
                                             : null}
                                         </View>
