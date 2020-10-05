@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react'
-import { Text, View, StyleSheet, Button, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { Text, View, StyleSheet, Button, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { AntDesign } from '@expo/vector-icons';
 import { Transition, Transitioning } from "react-native-reanimated"
 import { Context as TempContext } from "../context/TempContext"
@@ -22,40 +22,48 @@ CreateTempScreen = (props) => {
     const [time1, setTime] = useState(0)
     const [name, setName] = useState('')
     const [datas, setDatas] = useState([])
-    let naber = [];
+    const [naber, setnaber] = useState([])
     let totalTime = 0;
+    const [count, setCount] = React.useState(0);
+
+    React.useEffect(() => {
+        console.log(count);
+      },[count]);
 
     React.useLayoutEffect(() => {
         props.navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                  onPress={() => gonder()}>
+                  onPress={() => setCount(c => c + 1)}>
                     <Text style={{fontSize:23, color:"#fff" , marginRight:8}}>
                     {I18n.t('SAVEbtn')}
                     </Text>
                 </TouchableOpacity>)
         });
-      }, [props.navigation]);
+      }, [props.navigation ]);
 
-    const submit = async () => {
+    const submit = () => {
         for (let index = 0; index < list.length; index++) {
             totalTime = totalTime + list[index].time
-            naber.push({ "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } })
+            let newArray = [...naber, { "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } }]
+            console.log("newArray : ",newArray);
+            setnaber(newArray)
+            // naber.push({ "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } })
         }
         setDatas(naber)
+        console.log("naber :",naber);
         return (naber)
     }
 
-    let [list, setList] = useState([
-    ])
+    let [list, setList] = useState([])
     let tutacak = []
 
     const ref = React.useRef()
 
-    async function gonder() {
-        const newDatas = await submit()
-        console.log(newDatas)
-        createTemp(name, newDatas)
+    function gonder() {
+        const newDatas = submit()
+        console.log("newDatas: ",newDatas);
+        // createTemp(name, newDatas)
     }
 
     function splicele(index){
@@ -151,6 +159,7 @@ CreateTempScreen = (props) => {
                     )
                 })}
                 <TouchableOpacity style={[styles.tus, { margin: 17 , backgroundColor:"#d2f9f8" , flexDirection:"row" }]} onPress={() => {
+                    console.log(list);
                     let newArray = [...list, {
                         id: list.length !== 0 ? list[list.length - 1].id + 1 : 1,
                         max: 0,
@@ -158,12 +167,13 @@ CreateTempScreen = (props) => {
                         time: 0
                     }]
                     setList(newArray)
-                    //  ,console.log(newArray);
+                    console.log(list);
                 }}>
                     <AntDesign name="pluscircleo" size={24} color="#999" style={{alignSelf:"center" , margin:3}}/>
                     <Text style={{ fontSize: 23 , marginBottom:3 , marginRight:3 }}>{I18n.t('AddSession')}</Text>
                 </TouchableOpacity>
-            </ScrollView>
+                <Button title="naber" onPress={() =>{gonder()}}></Button>
+            </ScrollView> 
         </Transitioning.View>
     )
 }

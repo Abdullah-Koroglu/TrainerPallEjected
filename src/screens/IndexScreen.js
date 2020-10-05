@@ -243,7 +243,7 @@ IndexScreen = (props) => { // const instants = [];
             {recording ?
                 <View style={styles.row}>
                     <TouchableOpacity
-                        onPress={() => {
+                        onPressIn={() => {
                             Toast.show(I18n.t('HoldtoPause'), {
                                 duration: Toast.durations.LONG,
                                 position: Toast.positions.BOTTOM,
@@ -301,7 +301,7 @@ IndexScreen = (props) => { // const instants = [];
                 flexDirection: "row"
             }}>
                 <View>
-                    <Text style={styles.blogName}>{I18n.t("Time")}</Text>
+                    <Text style={styles.blogName}>{I18n.t("RemainingTime")}</Text>
 
                     {!isNaN(durations[session - 1] - time) ?
                         <Text style={styles.blogName}>{Math.floor((durations[session - 1] - time) / 60) < 10 ? 0 : null}{Math.floor((durations[session - 1] - time) / 60)} : {(durations[session - 1] - time) % 60 < 10 ? 0 : null}{(durations[session - 1] - time) % 60}</Text> :

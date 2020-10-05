@@ -29,13 +29,15 @@ loginViaStored = dispatch =>{
 signup = dispatch => async ({email, password})=>{
         try{
             const response = await trackerApi.post('/signup',{email,password})
+            console.log(response);
             await AsyncStorage.setItem('token',response.data.token)
             dispatch({type:'signin' , payload:response.data.token})
-        }catch(err){
+        }catch(error){
+            error.response.data.error ? 
+            dispatch({type:'add_error' , payload:error.response.data.error}):
             dispatch({type:'add_error' , payload:'Something went wrong  with sign up'})
-            console.log(err.message)  
-        
-    } 
+            } 
+
 }
 
 signin = dispatch =>{
@@ -46,8 +48,9 @@ signin = dispatch =>{
             dispatch({type:'signin' , payload:response.data.token})
             console.log(response.data.token)
         }catch(err){
-            dispatch({type:'add_error' , payload:'Something went wrong with sign in'})
-            console.log(err.message)  
+            err.response.data.error ? 
+            dispatch({type:'add_error' , payload:err.response.data.error}):
+            dispatch({type:'add_error' , payload:'Something went wrong  with sign up'})  
         }
     } 
 }
