@@ -24,10 +24,10 @@ CreateTempScreen = (props) => {
     const [datas, setDatas] = useState([])
     const [naber, setnaber] = useState([])
     let totalTime = 0;
-    const [count, setCount] = React.useState(0);
+    const [count, setCount] = useState(0);
 
     React.useEffect(() => {
-        console.log(count);
+        console.log(count , naber , datas , totalTime);
       },[count]);
 
     React.useLayoutEffect(() => {
@@ -45,10 +45,7 @@ CreateTempScreen = (props) => {
     const submit = () => {
         for (let index = 0; index < list.length; index++) {
             totalTime = totalTime + list[index].time
-            let newArray = [...naber, { "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } }]
-            console.log("newArray : ",newArray);
-            setnaber(newArray)
-            // naber.push({ "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } })
+            setnaber([...naber, { "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } }])            // naber.push({ "instants": { "sessionID": list[index].id, "minHR": list[index].min, "maxHR": list[index].max, "duration": totalTime * 1000 } })
         }
         setDatas(naber)
         console.log("naber :",naber);

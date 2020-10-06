@@ -32,6 +32,7 @@ fetchWorkout = dispatch => async() =>{
             console.log(error);
           });
     dispatch({type:'fetch_workout' , payload:data.data})
+    return data.data
 }
 createWorkout = dispatch => async (name , datas) =>{
     await trackerApi.post('/saveUserWorkout',{name , datas})

@@ -12,9 +12,10 @@ import I18n from "../services/translation"
 
 MyWorkoutsListScreen = (props) => {
     const { state, fetchWorkout, startRecording , deleteWorkout } = useContext(WorkoutContext)
-    const [refreshing, setrefreshing] = useState(false)
-    useEffect(() => {
-        fetchWorkout();
+    const [refreshing, setrefreshing] = useState(true)
+    useEffect(async() => {
+        onRefresh()
+        // fetchWorkout()
     }, [])
 
     function wait(timeout) {
@@ -22,30 +23,26 @@ MyWorkoutsListScreen = (props) => {
             setTimeout(resolve, timeout)
         })
     }
-    const onRefresh = React.useCallback(() => {
+    const onRefresh = React.useCallback(async() => {
         setrefreshing(true)
-
-        wait(2000).then(() => {
-            setrefreshing(false);
-            fetchWorkout()
-        })
+        let datas = await fetchWorkout()
+        console.log(datas);
+        setrefreshing(!datas)
     }, [refreshing])
 
     function datele(date) {
         let newDate = new Date(date)
-        // if(newDate.getFullYear()===1970){
-        //     return 1
-        // }else{
         return newDate
-        // }
-
     }
 
-    const deneme = React.useCallback(() => {
-        startRecording()
+    _listEmptyComponent = () => {
+        return (
+            <View>
+                <Text style={styles.blogName}>You have no activity</Text>
+            </View>
+        )
     }
-        //, console.log(state.recording) 
-        , [state.recording])
+
     return (
         <View style={{ backgroundColor: "#00d8d3", flex: 1 }}>
             <View style={styles.topFigure}>
@@ -54,12 +51,13 @@ MyWorkoutsListScreen = (props) => {
                 contentContainerStyle={styles.scrollView}
                 refreshControl={
                     <RefreshControl
-                        refreshing={refreshing}
+                        refreshing={state.list?refreshing:true}
                         onRefresh={onRefresh} />
                 }
             >
                 <View style={{ paddingHorizontal: window.height * 0.021 }}>
                     <FlatList
+                    ListEmptyComponent={!refreshing?_listEmptyComponent:null}
                         contentContainerStyle={{}}
                         data={state.list}
                         keyExtractor={item => item._id}
@@ -106,6 +104,13 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: "center",
         justifyContent: "center"
+    },
+    blogName: {
+        color:"white",
+        paddingTop: window.height * 0.01,
+        fontSize: window.height * 0.023,
+        alignSelf: 'center',
+        alignContent:"center",
     }
 })
 export default MyWorkoutsListScreen

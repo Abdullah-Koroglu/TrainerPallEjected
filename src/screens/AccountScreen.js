@@ -23,9 +23,7 @@ AccountScreen = (props) => {
             headerRight: () => (
                 <TouchableOpacity
                     onPress={() => setCount(c => c + 1)}>
-                    <Text style={{ fontSize: 23, color: "#fff", marginRight: 8 }}>{count % 2 === 0 ?
-                          count
-                        : "Save"}</Text>
+                    <Text style={{ fontSize: 23, color: "#fff", marginRight: 8 }}>Edit</Text>
 
                 </TouchableOpacity>)
         });

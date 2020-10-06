@@ -16,45 +16,28 @@ TempSelectScreen = (props) => {
             setTimeout(resolve, timeout)
         })
     }
-    const onRefresh = React.useCallback(() => {
+    const onRefresh = React.useCallback(async() => {
         setrefreshing(true)
-
-        wait(2000).then(() => {
-            setrefreshing(false);
-            fetchTemp()
-        })
+        let datas = await fetchTemp()
+        console.log(datas);
+        setrefreshing(!datas)
     }, [refreshing])
 
     useEffect(() => {
-        fetchTemp();
+        onRefresh();
     }, [])
 
     _listEmptyComponent = () => {
         return (
             <View>
+                <Text style={styles.blogName}>You have no workout</Text>
             </View>
         )
     }
-    // switchli = (it) => {
-    //     switch (it) {
-    //         case 1:
-    //             return <Text>beginner</Text>
-    //         case 2:
-    //             return <Text>easy</Text>
-    //         case 3:
-    //             return <Text>medium</Text>
-    //         case 4:
-    //             return <Text>hard</Text>
-    //         default:
-    //             return <Text>easy</Text>
-    //     }
-    // }
-
     function datele(date) {
         let newDate = new Date(date)
         return newDate
     }
-
 
     return (
         <View style={{ backgroundColor: "#00C5C0", flex: 1 }}>
@@ -71,7 +54,7 @@ TempSelectScreen = (props) => {
                 <FlatList
                     style={{ paddingHorizontal: window.height * 0.022 }}
                     data={state.temps}
-                    ListEmptyComponent={_listEmptyComponent}
+                    ListEmptyComponent={!refreshing?_listEmptyComponent:null}
                     keyExtractor={item => item._id}
                     renderItem={({ item }) => {
                         return (
@@ -107,7 +90,9 @@ const styles = StyleSheet.create({
     blogName: {
         paddingTop: window.height * 0.01,
         fontSize: window.height * 0.023,
-        alignSelf: 'center'
+        alignSelf: 'center',
+        color:"#fff",
+        justifyContent:"center"
     }, topFigure: {
         height: window.height * 0.6,
         borderBottomLeftRadius: window.width,
