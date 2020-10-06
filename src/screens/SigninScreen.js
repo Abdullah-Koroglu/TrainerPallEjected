@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
-import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions , Image} from 'react-native'
 import { Context } from '../context/AuthContext'
 import I18n from "../services/translation"
 
 
 const window = Dimensions.get('window');
 import AuthForm from '../components/AuthForm'
+// import naber from "../../assets/TrainerPalWhite.png"
 
 SigninScreen = ({ navigation }) => {
     const { state, signin, clearError } = useContext(Context)
@@ -24,9 +25,9 @@ SigninScreen = ({ navigation }) => {
             borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
         }}>
             {/* <MaterialCommunityIcons name="bike" size={100} color="#fff" style={{paddingTop:window.height*0.1}} /> */}
-            <Text style={{ fontSize: window.height*0.05, color: "#fff", paddingTop: window.height*0.13 }}>
-                [YOUR LOGO HERE]
-            </Text>
+            <Image source={require("../../assets/TrainerPalWhite.png")}
+            style={[styles.tinyLogo, { position: "absolute" }]}>
+            </Image>
         </View><View style={styles.container}>
             <View style={styles.Card}>
                 <AuthForm
@@ -80,6 +81,13 @@ const styles = StyleSheet.create({
         marginLeft: window.width * 0.05,
         fontSize: window.height * 0.017
 
+    },tinyLogo: {
+        marginTop:98,
+        width: window.width * 0.23,
+        height: null,
+        // flex:1,
+        aspectRatio: 1,
+        resizeMode: "contain"
     }
 
 })

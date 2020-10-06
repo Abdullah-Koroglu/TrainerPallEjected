@@ -3,12 +3,12 @@ import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions,
 import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign , MaterialIcons } from '@expo/vector-icons';
 import I18n from "../services/translation"
 
 
 TempSelectScreen = (props) => {
-    const { state, fetchTemp } = useContext(TempContext)
+    const { state, fetchTemp , deleteTemp } = useContext(TempContext)
     const [refreshing, setrefreshing] = useState(false)
 
     function wait(timeout) {
@@ -90,7 +90,9 @@ TempSelectScreen = (props) => {
                                             <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
                                             : null}
                                         </View>
-                                        <AntDesign name="right" size={24} color="black" style={{ alignSelf:"center",paddingTop: window.height * 0.012, flex: 0.1 }} />
+                                        <TouchableOpacity onPress={()=>deleteTemp(item._id)} style={{ alignSelf:"center",paddingRight: window.height * 0.012, flex: 0.1 }}>
+                                        <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf:"center" }} />
+                                        </TouchableOpacity>
                                     </View>
                                 </View>
                             </TouchableOpacity>
@@ -101,7 +103,6 @@ TempSelectScreen = (props) => {
     )
 }
 
-"#00C5C0"
 const styles = StyleSheet.create({
     blogName: {
         paddingTop: window.height * 0.01,

@@ -6,12 +6,12 @@ import { CommonActions } from '@react-navigation/native';
 import navigate from '../navigationRef'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign , MaterialIcons } from '@expo/vector-icons';
 import I18n from "../services/translation"
 
 
 MyWorkoutsListScreen = (props) => {
-    const { state, fetchWorkout, startRecording } = useContext(WorkoutContext)
+    const { state, fetchWorkout, startRecording , deleteWorkout } = useContext(WorkoutContext)
     const [refreshing, setrefreshing] = useState(false)
     useEffect(() => {
         fetchWorkout();
@@ -36,7 +36,7 @@ MyWorkoutsListScreen = (props) => {
         // if(newDate.getFullYear()===1970){
         //     return 1
         // }else{
-            return newDate
+        return newDate
         // }
 
     }
@@ -70,17 +70,18 @@ MyWorkoutsListScreen = (props) => {
                                 }>
                                 <View style={{ backgroundColor: "#fff", borderRadius: window.height * 0.022, flexDirection: "column", justifyContent: "center", height: window.height / 11 }}>
                                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                                        <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ alignSelf:"center" ,flex: 0.2, paddingLeft: window.width * 0.04 }} />
-                                        <View style={{alignContent:"flex-start", flex: 0.93 }}>
+                                        <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ alignSelf: "center", flex: 0.2, paddingLeft: window.width * 0.04 }} />
+                                        <View style={{ alignContent: "flex-start", flex: 0.93 }}>
                                             <Text style={{ fontSize: window.height * 0.028 }}>
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                            <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
-                                            : null}
+                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text>
+                                                : null}
                                         </View>
-                                        <AntDesign name="right" size={24} color="black" style={{ alignSelf:"center",paddingTop: window.height * 0.012, flex: 0.1 }} />
-                                    </View>
+                                        <TouchableOpacity onPress={() => deleteWorkout(item._id)} style={{ alignSelf: "center", paddingRight: window.height * 0.012, flex: 0.1 }}>
+                                            <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf: "center" }} />
+                                        </TouchableOpacity></View>
                                 </View>
                             </TouchableOpacity>
                             )

@@ -26,7 +26,7 @@ const trackReducer = (state , action) =>{
 fetchWorkout = dispatch => async() =>{
     let data
     await trackerApi
-        .get('/workouts')
+        .post('/getUserWorkouts')
         .then(response => (data = response))
         .catch(error => {
             console.log(error);
@@ -34,9 +34,16 @@ fetchWorkout = dispatch => async() =>{
     dispatch({type:'fetch_workout' , payload:data.data})
 }
 createWorkout = dispatch => async (name , datas) =>{
-    await trackerApi.post('/workouts',{name , datas})
+    await trackerApi.post('/saveUserWorkout',{name , datas})
     console.log("createWorkout")
 }
+
+deleteWorkout = dispatch => async (id) =>{
+    var strLink = "/deleteWorkout/" + id;
+    await trackerApi.post(strLink).then(fetchWorkout())
+    
+} 
+
 startRecording =  dispatch => () =>{
     dispatch({type:'start_recording'});
 } 
@@ -63,6 +70,6 @@ setHR = dispatch => (HR) =>{
 
 export const { Provider , Context } = createDataContext(
     trackReducer,
-    { fetchWorkout , reset , createWorkout , startRecording , changeName , addInstant , stopRecording , setHR} ,
+    { fetchWorkout , deleteWorkout , reset , createWorkout , startRecording , changeName , addInstant , stopRecording , setHR} ,
     {recording : false , datas : [] , currentInstant : null ,  name : ""  , list: [] , HRa : 0}
 )

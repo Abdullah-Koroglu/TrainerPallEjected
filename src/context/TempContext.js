@@ -13,7 +13,7 @@ const trackReducer = (state , action) =>{
 fetchTemp = dispatch => async() =>{
     let data
     await trackerApi
-        .get('/temps')
+        .post('/getUserTemplate')
         .then(response => (data = response))
         .catch(error => {
             console.log(error);
@@ -21,11 +21,17 @@ fetchTemp = dispatch => async() =>{
     dispatch({type:'fetch_workout' , payload:data.data})
 }
 createTemp = dispatch => async (name , datas) =>{
-    await trackerApi.post('/temps',{name , datas})
+    await trackerApi.post('/saveUserTemplate',{name , datas})
+}
+
+deleteTemp = dispatch => async (id) =>{
+    var strLink = "/deleteTemplate/" + id;
+    await trackerApi.post(strLink).then(fetchTemp())
+    
 }
 
 export const { Provider , Context } = createDataContext(
     trackReducer,
-    { fetchTemp , createTemp } ,
+    { fetchTemp , createTemp , deleteTemp } ,
     {temps :[]}
 )

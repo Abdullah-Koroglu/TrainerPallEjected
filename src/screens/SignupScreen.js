@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react'
 import { Context as authContext } from '../context/AuthContext'
-import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions } from 'react-native'
+import { Text, View, StyleSheet, TouchableOpacity, Alert, ActivityIndicator, SafeAreaView, Dimensions , Image} from 'react-native'
 import { Card } from 'react-native-elements'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import I18n from "../services/translation"
@@ -33,9 +33,9 @@ SignupScreen = ({ navigation }) => {
             borderBottomStartRadius: window.height * 4.8, alignSelf: "center", alignItems: "center"
         }}>
             {/* <MaterialCommunityIcons name="bike" size={100} color="#fff" style={{paddingTop:window.height*0.1}} /> */}
-            <Text style={{ fontSize: window.height*0.05, color: "#fff", paddingTop: window.height*0.13 }}>
-                [YOUR LOGO HERE]
-            </Text>
+            <Image source={require("../../assets/TrainerPalWhite.png")}
+            style={[styles.tinyLogo, { position: "absolute" }]}>
+            </Image>
         </View>
         <View style={styles.container}>
             <View style={styles.Card}>
@@ -91,11 +91,14 @@ const styles = StyleSheet.create({
         fontSize: window.height * 0.017
 
     },
-    // headerText: {
-    //     paddingBottom: window.width * 0.014,
-    //     fontWeight: 'normal',
-    //     fontSize: window.width * 0.033
-    // }
+    tinyLogo: {
+        marginTop:98,
+        width: window.width * 0.23,
+        height: null,
+        // flex:1,
+        aspectRatio: 1,
+        resizeMode: "contain"
+    }
 
 })
 

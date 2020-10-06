@@ -9,6 +9,7 @@ import { SimpleLineIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
 import { Card } from 'react-native-paper';
 import { setNavigator } from './src/navigationRef'
 
+import { Provider as ProfileProvider } from './src/context/ProfileContext'
 import { Provider as WorkoutProvider } from './src/context/WorkoutContext'
 import { Provider as TempProvider } from './src/context/TempContext'
 import { Provider as AuthProvider, Context as AuthContext } from './src/context/AuthContext'
@@ -157,6 +158,30 @@ const workoutFlow = () => {
   )
 }
 
+const accountFlow = () => {
+  return (
+    <Stack.Navigator
+      mode={"card"}
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#00C5C0',
+        }
+      }}
+    >
+      <Stack.Screen name={I18n.t('Account')} component={AccountScreen}
+        options={{
+          title: I18n.t('Account'),
+          headerTitleAlign: "center",
+          headerTintColor: "white",
+          // headerRight: () =>
+          //   <TouchableOpacity onPress={() => {}}>
+          //     <Text>Edit</Text>
+          //   </TouchableOpacity>
+        }} />
+    </Stack.Navigator>
+  )
+}
+
 function MyTabs() {
   return (
     <Tab.Navigator
@@ -176,7 +201,7 @@ function MyTabs() {
           <SimpleLineIcons name="fire" color={color} size={24} />
         ),
       }} />
-      <Tab.Screen name={I18n.t('Account')} component={AccountScreen} options={{
+      <Tab.Screen name={I18n.t('Account')} component={accountFlow} options={{
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="account-circle-outline" color={color} size={26} />
         ),
@@ -212,8 +237,10 @@ export default () => {
     <AuthProvider>
       <WorkoutProvider>
         <TempProvider>
-          <BleFunctions></BleFunctions>
+          <ProfileProvider>
+            <BleFunctions></BleFunctions>
           <App />
+          </ProfileProvider>
         </TempProvider>
       </WorkoutProvider>
     </AuthProvider>

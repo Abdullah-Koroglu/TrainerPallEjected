@@ -1,701 +1,160 @@
- datalarial = () =>{
-        for(let a of state[1].datas){
-            console.log(a.instants)
-            instants.push(a.instants)
-        }
-        for(let a of instants){
-            tutmac.push(a.maxHR)
-            tutmac1.push(a.minHR)
-        }
-        setdeger(tutmac)
-        setdeger1(tutmac1)
-     }
-
-      {/* <LineChart
-  data={{
-    labels: label,
-    datasets: [
-      {
-        data: deger,
-      },{
-          data : deger1
-        },
-        {
-            data : clientHRs
-        }
-    ],
-  }}
-  width={Dimensions.get('window').width } // from react-native
-  height={220}
-verticalLabelRotation={90}
-paddingLeft={0}
-withInnerLines={false}
-showBarTops={true}
-  chartConfig={{
-    backgroundColor: "#b210ab",
-    backgroundGradientFrom: "#b210ab",
-    backgroundGradientTo: "#b210ab",
-    decimalPlaces: 0, // optional, defaults to 2dp
-    color: (opacity = 0) => `rgba(255, 255, 255, 0.67)`,
-    labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-    strokeWidth:1.6,
-    style: {
-      borderRadius: 16
+[
+    {
+        "name": "Hard Level",
+        "date": "1970-01-01T00:00:00.001Z",
+        "_id": "5f6cb00392349a82701dacee",
+        "level": 2,
+        "datas": [
+            {
+                "instants": {
+                    "maxHR": 90,
+                    "minHR": 70,
+                    "duration": 70000,
+                    "rpm": 1,
+                    "sessionID": 1
+                },
+                "_id": "5f6cb00392349a82701dacef"
+            },
+            {
+                "instants": {
+                    "maxHR": 120,
+                    "minHR": 90,
+                    "duration": 120000,
+                    "rpm": 1,
+                    "sessionID": 2
+                },
+                "_id": "5f6cb00392349a82701dacf0"
+            },
+            {
+                "instants": {
+                    "maxHR": 130,
+                    "minHR": 110,
+                    "duration": 230000,
+                    "rpm": 1,
+                    "sessionID": 3
+                },
+                "_id": "5f6cb00392349a82701dacf1"
+            },
+            {
+                "instants": {
+                    "maxHR": 90,
+                    "minHR": 70,
+                    "duration": 320000,
+                    "rpm": 1,
+                    "sessionID": 4
+                },
+                "_id": "5f6cb00392349a82701dacf2"
+            }
+        ],
+        "userId": "5eaac9501d48312c709ca254",
+        "__v": 0
     },
-    propsForDots: {
-      r: "0",
-      strokeWidth: "12",
-    }
-  }}
-/>      */}
-
-
-const navigator = createStackNavigator({
-    Index         : {screen:IndexScreen, options:{title:'my'}},
-    Select        : {screen:TempSelectScreen, options:{title:'my'}},
-    Test          : {screen:TestScreen, options:{title:'my'}},
-    SaveWorkout   : {screen:SaveWorkoutScreen, options:{title:'my'}}
-},{
-    initialRouteName:'Test',
-    defaultNavigationOptions:{
-        headerStyle: {
-            backgroundColor: '#b210ab',
-          },
-          headerTintColor: '#fff'
+    {
+        "name": "Let's begin",
+        "date": "1970-01-01T00:00:00.001Z",
+        "_id": "5f746946dafff439156ff206",
+        "datas": [
+            {
+                "instants": {
+                    "sessionID": 1,
+                    "minHR": 100,
+                    "maxHR": 120,
+                    "duration": 120000
+                },
+                "_id": "5f746946dafff439156ff207"
+            },
+            {
+                "instants": {
+                    "sessionID": 2,
+                    "minHR": 110,
+                    "maxHR": 130,
+                    "duration": 720000
+                },
+                "_id": "5f746946dafff439156ff208"
+            },
+            {
+                "instants": {
+                    "sessionID": 3,
+                    "minHR": 130,
+                    "maxHR": 150,
+                    "duration": 1920000
+                },
+                "_id": "5f746946dafff439156ff209"
+            },
+            {
+                "instants": {
+                    "sessionID": 4,
+                    "minHR": 120,
+                    "maxHR": 140,
+                    "duration": 2220000
+                },
+                "_id": "5f746946dafff439156ff20a"
+            },
+            {
+                "instants": {
+                    "sessionID": 5,
+                    "minHR": 140,
+                    "maxHR": 160,
+                    "duration": 2520000
+                },
+                "_id": "5f746946dafff439156ff20b"
+            },
+            {
+                "instants": {
+                    "sessionID": 6,
+                    "minHR": 110,
+                    "maxHR": 130,
+                    "duration": 2640000
+                },
+                "_id": "5f746946dafff439156ff20c"
+            },
+            {
+                "instants": {
+                    "sessionID": 7,
+                    "minHR": 100,
+                    "maxHR": 120,
+                    "duration": 2940000
+                },
+                "_id": "5f746946dafff439156ff20d"
+            }
+        ],
+        "userId": "5eaac9501d48312c709ca254",
+        "__v": 0
     },
-    headerTitleStyle: {
-        fontWeight: 'bold',
-        alignSelf:'center'
-      },
-})
-
-
-const switchNavigator = createSwitchNavigator({
-    loginFlow:createSwitchNavigator({
-        Signup: SignupScreen,
-        Signin: SigninScreen
-    }),
-    mainFlow:createBottomTabNavigator({
-        workoutListFlow:createStackNavigator({
-            MyWorkouts      : MyWorkoutsListScreen,
-            MyWorkoutDetail : MyWorkoutDetailScreen
-    }),
-        idmanFlow:createSwitchNavigator({
-            tempFlow:createStackNavigator({
-                TempSelect : TempSelectScreen,
-                CreateTemp : CreateTempScreen
-              }),
-              workoutFlow:createStackNavigator({
-                Index       : IndexScreen,
-                SaveWorkout : SaveWorkoutScreen
-             })
-        })
-    }),
-    Account:AccountScreen
-  }
-)
-
-
-
-
-import React from 'react'
-import {createAppContainer, createSwitchNavigator} from 'react-navigation'
-import { createBottomTabNavigator } from "react-navigation-tabs";
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
-//import {createStackNavigator} from 'react-navigation-stack'
-import {createStackNavigator} from '@react-navigation/stack';
-import {setNavigator} from './src/navigationRef'
-
-import {Provider as WorkoutProvider} from './src/context/WorkoutContext'
-import {Provider as TempProvider} from './src/context/TempContext'
-import {Provider as AuthProvider} from './src/context/AuthContext'
-
-import IndexScreen from './src/screens/IndexScreen'
-import TempSelectScreen from './src/screens/TempSelectScreen'
-import SignupScreen from './src/screens/SignupScreen'
-import SigninScreen from './src/screens/SigninScreen'
-import MyWorkoutsListScreen from './src/screens/MyWorkoutsListScreen'
-import MyWorkoutDetailScreen from './src/screens/MyWorkoutDetailScreen'
-import CreateTempScreen from './src/screens/CreateTempScreen'
-import AccountScreen from './src/screens/AccountScreen'
-import SaveWorkoutScreen from './src/screens/SaveWorkoutScreen'
-import { Switch } from 'react-native-paper';
-
-
-const switchNavigator = createSwitchNavigator({
-loginFlow:createSwitchNavigator({
-      Signup: SignupScreen,
-      Signin: SigninScreen
-}),
-mainFlow:createMaterialBottomTabNavigator({
-      workoutListFlow:createStackNavigator({
-          MyWorkouts      : MyWorkoutsListScreen,
-          MyWorkoutDetail : MyWorkoutDetailScreen
-},
-{defaultNavigationOptions:{headerStyle: {backgroundColor: '#b210ab',},headerTintColor: '#fff'}}
-),
-          tempFlow:createStackNavigator({
-              TempSelect  : TempSelectScreen,
-              CreateTemp  : CreateTempScreen,
-              Index       : IndexScreen,
-              SaveWorkout : SaveWorkoutScreen
-          },{ headerStyle: { backgroundColor: 'papayawhip' } , defaultNavigationOptions:{headerStyle: {backgroundColor: '#b210ab', },headerTintColor: '#fff'}}
-          ),
-      Profile:createStackNavigator({
-          Account:AccountScreen
-      },{defaultNavigationOptions:{headerStyle: {backgroundColor: '#b210ab', alignSelf:"center"},headerTintColor: '#000000'}}
-)
-},
-{inactiveColor:"#cccccc" ,focused: false, barStyle:{ backgroundColor: '#b210ab' }}
-)
-}
-)
-
-
-const App = createAppContainer(switchNavigator)
-
-export default() => {
-    return (
-        <AuthProvider>
-            <WorkoutProvider>
-                <TempProvider>
-                    <App ref= { (navigator) =>  setNavigator(navigator)}/>
-                </TempProvider>
-            </WorkoutProvider>
-        </AuthProvider>
-    )
-};
-
-
---------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableHighlight,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-  PermissionsAndroid,
-  ScrollView,
-  AppState,
-  FlatList,
-  Dimensions,
-  Button,
-  SafeAreaView,
-  TouchableOpacity,
-  Switch
-} from 'react-native';
-import BleManager from 'react-native-ble-manager';
-import {Context as WorkoutContext} from '../context/WorkoutContext'
-import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import IteminList from '../components/IteminList';
-
-const window = Dimensions.get('window');
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
-
-
-export default class DeviceSelectScreen extends Component {
-  constructor(){
-    super()
-
-    this.state = {
-      scanning:false,
-      peripherals: new Map(),
-      appState: ''
-    }
-
-    this.handleDiscoverPeripheral = this.handleDiscoverPeripheral.bind(this);
-    this.handleStopScan = this.handleStopScan.bind(this);
-    this.handleUpdateValueForCharacteristic = this.handleUpdateValueForCharacteristic.bind(this);
-    this.handleDisconnectedPeripheral = this.handleDisconnectedPeripheral.bind(this);
-    this.handleAppStateChange = this.handleAppStateChange.bind(this);
-  }
-
-  
-
-  componentDidMount() {
-    const {test} = useContext(WorkoutContext)
-
-    AppState.addEventListener('change', this.handleAppStateChange);
-
-    BleManager.start({showAlert: false});
-
-    this.handlerDiscover = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', this.handleDiscoverPeripheral );
-    this.handlerStop = bleManagerEmitter.addListener('BleManagerStopScan', this.handleStopScan );
-    this.handlerDisconnect = bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', this.handleDisconnectedPeripheral );
-    this.handlerUpdate = bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', this.handleUpdateValueForCharacteristic );
-
-
-
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              console.log("Permission is OK");
-            } else {
-              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-                if (result) {
-                  console.log("User accept");
-                } else {
-                  console.log("User refuse");
-                }
-              });
+    {
+        "name": "Burn some cals",
+        "date": "1970-01-01T00:00:00.001Z",
+        "_id": "5f74f0d9dafff439156ff218",
+        "datas": [
+            {
+                "instants": {
+                    "sessionID": 1,
+                    "minHR": 120,
+                    "maxHR": 130,
+                    "duration": 80000
+                },
+                "_id": "5f74f0d9dafff439156ff219"
+            },
+            {
+                "instants": {
+                    "sessionID": 2,
+                    "minHR": 80,
+                    "maxHR": 90,
+                    "duration": 150000
+                },
+                "_id": "5f74f0d9dafff439156ff21a"
+            },
+            {
+                "instants": {
+                    "sessionID": 3,
+                    "minHR": 100,
+                    "maxHR": 150,
+                    "duration": 200000
+                },
+                "_id": "5f74f0d9dafff439156ff21b"
             }
-      });
+        ],
+        "userId": "5eaac9501d48312c709ca254",
+        "__v": 0
     }
-
-  }
-
-  handleAppStateChange(nextAppState) {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!')
-      BleManager.getConnectedPeripherals([]).then((peripheralsArray) => {
-        console.log('Connected peripherals: ' + peripheralsArray.length);
-      });
-    }
-    this.setState({appState: nextAppState});
-  }
-
-  componentWillUnmount() {
-    this.handlerDiscover.remove();
-    this.handlerStop.remove();
-    this.handlerDisconnect.remove();
-    this.handlerUpdate.remove();
-  }
-
-  handleDisconnectedPeripheral(data) {
-    let peripherals = this.state.peripherals;
-    let peripheral = peripherals.get(data.peripheral);
-    if (peripheral) {
-      peripheral.connected = false;
-      peripherals.set(peripheral.id, peripheral);
-      this.setState({peripherals});
-    }
-    console.log('Disconnected from ' + data.peripheral);
-  }
-
-  handleUpdateValueForCharacteristic(data) {
-    console.log('Received data from ' + data.peripheral + ' characteristic ' + data.characteristic, data.value);
-  }
-
-  handleStopScan() {
-    console.log('Scan is stopped');
-    this.setState({ scanning: false });
-  }
-
-  startScan() {
-    if (!this.state.scanning) {
-      //this.setState({peripherals: new Map()});
-      BleManager.scan([], 13, true).then((results) => {
-        console.log('Scanning...');
-        this.setState({scanning:true});
-      });
-    }
-  }
-
-  retrieveConnected(){
-    BleManager.getConnectedPeripherals([]).then((results) => {
-      if (results.length == 0) {
-        console.log('No connected peripherals')
-      }
-      console.log(results);
-      var peripherals = this.state.peripherals;
-      for (var i = 0; i < results.length; i++) {
-        var peripheral = results[i];
-        peripheral.connected = true;
-        peripherals.set(peripheral.id, peripheral);
-        this.setState({ peripherals });
-      }
-    });
-  }
-
-  handleDiscoverPeripheral(peripheral){
-    var peripherals = this.state.peripherals;
-    console.log('Got ble peripheral', peripheral);
-    if (!peripheral.name) {
-      peripheral.name = 'NO NAME';
-    }
-    peripherals.set(peripheral.id, peripheral);
-    this.setState({ peripherals });
-  }
-
-  // test(peripheral) {
-  //   if (peripheral){
-  //     if (peripheral.connected){
-  //       BleManager.disconnect(peripheral.id);
-  //     }else{
-  //       BleManager.connect(peripheral.id).then(() => {
-  //         let peripherals = this.state.peripherals;
-  //         let p = peripherals.get(peripheral.id);
-  //         if (p) {
-  //           p.connected = true;
-  //           peripherals.set(peripheral.id, p);
-  //           this.setState({peripherals});
-  //         }
-  //         console.log('Connected to ' + peripheral.id);
-
-
-  //         setTimeout(() => {
-
-  //           /* Test read current RSSI value
-  //           BleManager.retrieveServices(peripheral.id).then((peripheralData) => {
-  //             console.log('Retrieved peripheral services', peripheralData);
-  //             BleManager.readRSSI(peripheral.id).then((rssi) => {
-  //               console.log('Retrieved actual RSSI value', rssi);
-  //             });
-  //           });*/
-
-  //           // Test using bleno's pizza example
-  //           // https://github.com/sandeepmistry/bleno/tree/master/examples/pizza
-  //           BleManager.retrieveServices(peripheral.id).then((peripheralInfo) => {
-  //             console.log(peripheralInfo);
-  //             var service = '0000180D-0000-1000-8000-00805f9b34fb';
-  //             var bakeCharacteristic = '00002A37-0000-1000-8000-00805f9b34fb';
-  //             var crustCharacteristic = '00002A37-0000-1000-8000-00805f9b34fb';
-
-  //             setTimeout(() => {
-  //               BleManager.startNotification(peripheral.id, service, bakeCharacteristic).then(() => {
-  //                 console.log('Started notification on ' + peripheral.id);
-  //                 this.props.navigation.pop()
-  //                 }).catch((error) => {
-  //                 console.log('Notification error', error);
-  //               });
-  //             }, 200);
-  //           });
-
-  //         }, 900);
-  //       }).catch((error) => {
-  //         console.log('Connection error', error);
-  //       });
-  //     }
-  //   }
-  // }
-
-  renderItem(item) {
-    const color = item.connected ? 'green' : '#fff';
-    return (
-        <IteminList id = {item.id} rssi = {item.rssi} name = {item.name} onPress={() => this.test(item)} color={color} connected={item.connected}/>
-    );
-  }
-
-
-  render() {
-    const list = Array.from(this.state.peripherals.values());
-    const btnScanTitle = 'Scan Bluetooth (' + (this.state.scanning ? 'on' : 'off') + ')';
-    const toggleSwitch = () => this.startScan();
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.container}>
-          <View style={{margin: 10 , flexDirection:"row" , justifyContent:"space-between", padding:14}}>
-            {/* <Button title="navigate" onPress={() => {this.props.navigation.pop()} } /> */}
-            <Text style={{fontSize:22 , fontWeight:"bold"}}>Toggle for Scanning</Text>
-            <Switch
-        trackColor={{ false: "#eeeeee", true: "#749f9c" }}
-        thumbColor={this.state.scanning ? "#317873" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={this.state.scanning}
-      />
-      {/* <Button title="Retrieve connected peripherals" onPress={() => this.retrieveConnected() } /> */}
-          </View>
-          <ScrollView style={styles.scroll}>
-            {(list.length == 0) &&
-              <View style={{flex:1, margin: 20}}>
-                <Text style={{textAlign: 'center'}}>No peripherals</Text>
-              </View>
-            }
-            <FlatList
-              data={list}
-              renderItem={({ item }) => this.renderItem(item) }
-              keyExtractor={item => item.id}
-            />
-
-          </ScrollView>
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    width: window.width,
-    height: window.height
-  },
-  scroll: {
-    flex: 1,
-    //backgroundColor: '#f0f0f0',
-    margin: 10,
-  },
-  row: {
-    margin: 10
-  },
-  itemName:{
-
-  },
-  itemRSSI:{
-
-  },
-  itemID:{
-
-  }  
-});
-
-
-
---------------------------------------------
-
-import React, { Component , useEffect , useState , useContext}  from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  NativeEventEmitter,
-  NativeModules,
-  Platform,
-  PermissionsAndroid,
-  AppState,
-  FlatList,
-  Dimensions,
-  SafeAreaView,
-  Switch,AsyncStorage
-} from 'react-native';
-import BleManager from 'react-native-ble-manager';
-import {Context as WorkoutContext} from '../context/WorkoutContext'
-import IteminList from '../components/IteminList';
-
-const window = Dimensions.get('window');
-
-const BleManagerModule = NativeModules.BleManager;
-const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
-var peripherals =[];
-
-const DeviceSelectScreen = (props) => {
-  const {setHR} = useContext(WorkoutContext)
-  const [scanning , setscanning] = useState(false)
-  const [peripherals , setperipherals] = useState([])
-  const [list , setlist] = useState(Array.from(peripherals))
-  
-   var handlerDiscover = bleManagerEmitter.addListener('BleManagerDiscoverPeripheral', handleDiscoverPeripheral );
-   var handlerStop = bleManagerEmitter.addListener('BleManagerStopScan', handleStopScan );
-   var handlerDisconnect = bleManagerEmitter.addListener('BleManagerDisconnectPeripheral', handleDisconnectedPeripheral );
-   var handlerUpdate = bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', handleUpdateValueForCharacteristic );
-
-  useEffect(() => {
-    retrieveSaved();
-    // setscanning(false);
-    AppState.addEventListener('change', handleAppStateChange);
-    BleManager.start({showAlert: true});
-
-    // handleDiscoverPeripheral = handleDiscoverPeripheral.bind(this);
-    // handleStopScan = handleStopScan.bind(this);
-    // handleUpdateValueForCharacteristic = handleUpdateValueForCharacteristic.bind(this);
-    // handleDisconnectedPeripheral = handleDisconnectedPeripheral.bind(this);
-    // handleAppStateChange = handleAppStateChange.bind(this);
-
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-        PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              console.log(result);
-              console.log("Permission is OK");
-            } else {
-              PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-                if (result) {
-                  console.log("User accept");
-                } else {
-                  console.log("User refuse");
-                }
-              });
-            }
-      });
-    }
-  });
-
-  retrieveSaved  =async() =>{
-    const savedItem = await AsyncStorage.getItem('savedItem')
-    if(!peripherals.includes(JSON.parse(savedItem).id))
-    peripherals.push(JSON.parse(savedItem).id,JSON.parse(savedItem));
-    // const list = Array.from(peripherals);
-    // setlist(peripherals)
-    // console.log(list);
-    // handleDiscoverPeripheral(JSON.parse(savedItem))
-    // test(savedItem)
-    // const retrievedItem =  await AsyncStorage.getItem("naber");
-    // console.log(JSON.parse(retrievedItem));
-  }
- 
-  handleAppStateChange = (nextAppState)=> {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
-      console.log('App has come to the foreground!')
-      BleManager.getConnectedPeripherals([]).then((peripheralsArray) => {
-        console.log('Connected peripherals: ' + peripheralsArray.length);
-      });
-    }
-    this.setState({appState: nextAppState});
-  }
-
-  handleDisconnectedPeripheral=(data)=>{
-    // let peripherals = state.peripherals;
-    console.log(data)
-    let peripheral = data.peripheral
-    if (peripheral) {
-      peripheral.connected = false;
-      peripherals.push(peripheral.id, peripheral);
-      setperipherals(peripherals)
-    }
-    console.log('Disconnected from ' + data.peripheral);
-  }
-
-  handleUpdateValueForCharacteristic=(data)=> {
-    // console.log('Received data from ' + data.peripheral + ' characteristic ' + data.characteristic, data.value);
-      setHR(data.value[1])
-  }
-
-  handleStopScan=()=> {
-    console.log('Scan is stopped');
-    setscanning(false)
-  }
-
-  startScan=()=> {
-    if (scanning === false) {
-      //this.setState({peripherals: new Map()});
-      BleManager.scan([], 5, true).then(() => {
-        console.log('Scanning...');
-        setscanning(true);
-      });
-    }
-  }
-
-  retrieveConnected = () =>{
-    BleManager.getConnectedPeripherals([]).then((results) => {
-      if (results.length == 0) {
-        console.log('No connected peripherals')
-      }
-      console.log(results);
-      for (var i = 0; i < results.length; i++) {
-        var peripheral = results[i];
-        peripheral.connected = true;
-        peripherals.push(peripheral.id, peripheral);
-      }
-    });
-  }
-
-  handleDiscoverPeripheral = (peripheral) =>{
-    if (peripheral.name ===  null) {
-      peripheral.name = 'NO NAME';
-    }
-    if(!peripherals.includes(peripheral.id))
-        peripherals.push(peripheral.id, peripheral);
-    // console.log('Got ble peripheral', peripheral);
-    // const list = Array.from(peripherals);
-    // setlist(list)
-    console.log(list)
-    // setperipherals(peripherals)
-    }
-
-
-  test =(peripheral) => {
-        BleManager.connect(peripheral.id).then(async() => {
-          //  let p = peripheral.id
-          // if (p) {
-          //   p.connected = true;
-          //   // peripherals.set(peripheral.id, p);
-          // }
-          await AsyncStorage.setItem('savedItem',JSON.stringify(peripheral))
-          console.log('Connected to ' + peripheral.name);
-          setTimeout(() => {
-            BleManager.retrieveServices(peripheral.id).then((peripheralInfo) => {
-              console.log(peripheralInfo);
-              var service = '0000180D-0000-1000-8000-00805f9b34fb';
-              var bakeCharacteristic = '00002A37-0000-1000-8000-00805f9b34fb';
-              var crustCharacteristic = '00002A37-0000-1000-8000-00805f9b34fb';
-
-              setTimeout(() => {
-                BleManager.startNotification(peripheral.id, service, bakeCharacteristic).then(() => {
-                  console.log('Started notification on ' + peripheral.id);
-                  props.navigation.pop()
-                  }).catch((error) => {
-                  console.log('Notification error', error);
-                });
-              }, 200);
-            });
-
-          }, 900);
-        }).catch((error) => {
-          console.log('Connection error', error);
-        });
-    }
-  
-
-    const toggleSwitch = () => startScan();
-    return (
-      <SafeAreaView style={styles.container}>
-        <View style={styles.container}>
-          <View style={{margin: window.height*0.012 , flexDirection:"row" , justifyContent:"space-between", padding:window.height*0.008}}>
-            {/* <Button title="navigate" onPress={() => {this.props.navigation.pop()} } /> */}
-            <Text style={{fontSize:window.height*0.028 , fontWeight:"bold"}}>Toggle for Scanning</Text>
-            <Switch
-        trackColor={{ false: "#eeeeee", true: "#749f9c" }}
-        thumbColor={scanning ? "#317873" : "#f4f3f4"}
-        ios_backgroundColor="#3e3e3e"
-        onValueChange={toggleSwitch}
-        value={scanning}
-      />
-          </View>
-            <FlatList
-             data={peripherals}
-             ListEmptyComponent={() =>{return(<View>
-               <Text>No peripherals around.</Text>
-             </View>)}}
-             renderItem={({ item }) => 
-               <IteminList id = {item.id} rssi = {item.rssi} name = {item.name} onPress={() =>{test(item)}
-                 } connected={item.connected}/>
-            }
-             keyExtractor={item => item.id}
-           />
-        </View>
-      </SafeAreaView>
-    );
-  }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-    width: window.width,
-    height: window.height
-  },
-  scroll: {
-    flex: 1,
-    //backgroundColor: '#f0f0f0',
-    margin: window.height*0.012,
-  },
-  row: {
-    margin: window.height*0.0122
-  },
-  itemName:{
-
-  },
-  itemRSSI:{
-
-  },
-  itemID:{
-
-  }  
-});
-
-
-export default DeviceSelectScreen
+]
