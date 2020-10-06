@@ -13,7 +13,7 @@ import I18n from "../services/translation"
 MyWorkoutsListScreen = (props) => {
     const { state, fetchWorkout, startRecording , deleteWorkout } = useContext(WorkoutContext)
     const [refreshing, setrefreshing] = useState(true)
-    useEffect(async() => {
+    useEffect(() => {
         onRefresh()
         // fetchWorkout()
     }, [])
