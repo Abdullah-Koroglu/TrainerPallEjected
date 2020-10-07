@@ -185,7 +185,7 @@ const accountFlow = () => {
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="workoutFlow"
+      initialRouteName="accountFlow"
       activeColor="#fff"
       inactiveColor="#3e2465"
       barStyle={{ backgroundColor: '#00C5C0' }}>
@@ -201,7 +201,7 @@ function MyTabs() {
           <SimpleLineIcons name="fire" color={color} size={24} />
         ),
       }} />
-      <Tab.Screen name={I18n.t('Account')} component={accountFlow} options={{
+      <Tab.Screen name="accountFlow" component={accountFlow} options={{
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="account-circle-outline" color={color} size={26} />
         ),

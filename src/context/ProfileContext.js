@@ -1,7 +1,5 @@
 import createDataContext from './createDataContext'
 import trackerApi from "../api/tracker"
-import { AsyncStorage } from 'react-native';
-import { act } from 'react-test-renderer';
 
 const profileReducer = (state,action) =>{
     switch (action.type) {
@@ -24,9 +22,11 @@ let data = null;
     .catch(error => {
         console.log(error);
       });
-      if(data.data.length > 0 ){
+      if(data.data.length > 0 || data.data.age > 0){
+        //   console.log(data);
         dispatch({type:'get_profile' , payload:data.data})
       }
+      return data.data
 } 
 
 
