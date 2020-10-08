@@ -28,9 +28,14 @@ createTemp = dispatch => async (name , datas) =>{
 }
 
 deleteTemp = dispatch => async (id) =>{
+    let data
     var strLink = "/deleteTemplate/" + id;
-    await trackerApi.post(strLink).then(fetchTemp())
-    
+    await trackerApi.post(strLink)
+    .then(response => (data = response))
+        .catch(error => {
+            console.log(error);
+          });
+    return data
 }
 
 resetTemps = dispatch =>{

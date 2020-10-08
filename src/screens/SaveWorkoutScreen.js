@@ -23,16 +23,18 @@ SaveWorkoutScreen = ({ navigation }) => {
             [
                 { text: 'Cancel', onPress: () => setAlertFlag(false) },
                 {
-                    text: 'Submit', onPress: () => {
-                        createWorkout(name, datas),
-                            setAlertFlag(false),
+                    text: 'Submit', onPress: async() => {
+                        setAlertFlag(false)
+                        try{
+                            let data = await createWorkout(name, datas)
+                            console.log(data) ,  
                             reset(),
-                            navigation.dispatch(
-                                CommonActions.navigate({
-                                    name: 'MyWorkoutsList',
-                                })
-                            ),
+                            navigation.popToTop()
+                            navigation.navigate("workoutFlow",{screen:"MyWorkoutsList"}),
                             fetchWorkout()
+                        }catch(err){
+                            console.log(err);
+                        }                            
                     },
                     style: 'cancel'
                 },

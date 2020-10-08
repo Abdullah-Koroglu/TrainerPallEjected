@@ -13,7 +13,7 @@ export default {
     SignUp : "Kaydol",
     SignIn : "Giriş",
     havenotAcconut:'Hesabın yok mu? Kayıt ol.',
-    saveActivity : "İdmanı kaydet.",
+    saveActivity : "İdmanı kaydet",
     saveDetail : "Daha sonra detayları görmek için idmanınızı kaydedin.",
     ActivityName:'İdman adı',
     WOdetailR1:"Bu sayfada idman detaylarını görebilirsin.",
@@ -35,7 +35,7 @@ export default {
     second:"saniye",
     seconds : "saniye",
     name : "isim",
-    AddSession : "bölüm ekle",
+    AddSession : "Bölüm ekle",
     Signout : "Çıkış yap",
     CreatedAt: "şu tarihte oluşturuldu : ",
     connected : "Bağlantı başarılı."

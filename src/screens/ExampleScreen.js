@@ -14,13 +14,14 @@ import {
   Dimensions,
   Button,
   SafeAreaView,
-  Switch,AsyncStorage
+  Switch, AsyncStorage
 } from 'react-native';
 import BleManager from 'react-native-ble-manager';
 import { Context as WorkoutContext } from '../context/WorkoutContext'
 import IteminList from '../components/IteminList';
-import {ble} from './BleFunctions'
+import { ble } from './BleFunctions'
 import I18n from "../services/translation"
+import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 
 
 
@@ -42,7 +43,7 @@ export default class ExampleScreen extends Component {
       peripherals: new Map(),
       appState: '',
       HR: 10,
-      list:[]
+      list: []
     }
 
     this.handleDiscoverPeripheral = this.handleDiscoverPeripheral.bind(this);
@@ -168,12 +169,15 @@ export default class ExampleScreen extends Component {
   retrieveSaved = async () => {
     var peripherals = this.state.peripherals;
     const savedItem = await AsyncStorage.getItem('savedItem')
-    console.log(JSON.parse(savedItem).id);
+    // console.log(JSON.parse(savedItem).id);
     // if (!peripherals.includes(JSON.parse(savedItem).id))
-    JSON.parse(savedItem).connected = false
+    if (JSON.parse(savedItem) !== null) {
+      JSON.parse(savedItem).connected = false
       peripherals.set(JSON.parse(savedItem).id, JSON.parse(savedItem));
       this.setState({ peripherals });
-      // this.list.push(peripherals)
+    }
+
+    // this.list.push(peripherals)
     // peripherals.push(JSON.parse(savedItem).id,JSON.parse(savedItem));
   }
 
@@ -231,6 +235,29 @@ export default class ExampleScreen extends Component {
   //   );
   // }
 
+  getState = () => {
+    BluetoothStateManager.getState().then(bluetoothState => {
+      switch (bluetoothState) {
+        case 'Unknown':
+          console.log("a");
+        case 'Resetting':
+          console.log("q");
+        case 'Unsupported':
+          console.log("w");
+        case 'Unauthorized':
+          console.log(3);
+        case 'PoweredOff':
+          BluetoothStateManager.enable().then(setTimeout(()=>{ this.startScan() }, 300))
+        case 'PoweredOn':
+          if (this.state.scanning !== true) {
+            this.startScan()
+          }
+        default:
+          break;
+      }
+    });
+  }
+
   render() {
     const list = Array.from(this.state.peripherals.values());
     // const btnScanTitle = 'Scan Bluetooth (' + (this.state.scanning ? 'on' : 'off') + ')';
@@ -245,7 +272,8 @@ export default class ExampleScreen extends Component {
               trackColor={{ false: "#eeeeee", true: "#749f9c" }}
               thumbColor={this.state.scanning ? "#317873" : "#f4f3f4"}
               ios_backgroundColor="#3e3e3e"
-              onValueChange={() => this.startScan()}
+              onValueChange={() => { this.getState() }
+              }
               value={this.state.scanning}
             />
           </View>

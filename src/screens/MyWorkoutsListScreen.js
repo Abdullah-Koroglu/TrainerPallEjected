@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, ScrollView, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl } from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl , Alert} from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { Context as WorkoutContext } from '../context/WorkoutContext'
 import { CommonActions } from '@react-navigation/native';
@@ -34,6 +34,22 @@ MyWorkoutsListScreen = (props) => {
         let newDate = new Date(date)
         return newDate
     }
+
+    function handleDelete(id) {
+        Alert.alert(
+            "Do you want to delete this workout from history?","",
+            [
+                { text: "Keep it", style: 'cancel', onPress: () => { } },
+                {
+                    text: "Delete",
+                    style: 'destructive',
+                    onPress: () => {deleteWorkout(id).then((data)=>{console.log(data); data ?fetchWorkout():null})},
+                },
+            ]
+        );
+        return true;
+    }
+
 
     _listEmptyComponent = () => {
         return (
@@ -74,10 +90,10 @@ MyWorkoutsListScreen = (props) => {
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text>
+                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth()+1}/{datele(item.date).getFullYear()} </Text>
                                                 : null}
                                         </View>
-                                        <TouchableOpacity onPress={() => deleteWorkout(item._id)} style={{ alignSelf: "center", paddingRight: window.height * 0.012, flex: 0.1 }}>
+                                        <TouchableOpacity onPress={() => handleDelete(item._id)} style={{ alignSelf: "center", paddingRight: window.height * 0.012, flex: 0.1 }}>
                                             <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf: "center" }} />
                                         </TouchableOpacity></View>
                                 </View>

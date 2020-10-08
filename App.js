@@ -30,8 +30,6 @@ import Naber from './src/screens/TestiScreen';
 import Naberi from './src/screens/Testi2';
 import BleFunctions from './src/screens/BleFunctions';
 import I18n from "./src/services/translation"
-
-
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -258,7 +256,9 @@ export default () => {
         <TempProvider>
           <ProfileProvider>
             <BleFunctions></BleFunctions>
-          <App />
+          <App 
+          // ref={(navigator)=>{setNavigator(navigator)}}
+          />
           </ProfileProvider>
         </TempProvider>
       </WorkoutProvider>

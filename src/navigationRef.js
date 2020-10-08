@@ -1,16 +1,23 @@
-import { NavigationActions } from "react-navigation";
+import { CommonActions } from '@react-navigation/native';
 
-let navigator
+let navigation
 
 export const setNavigator = nav =>{
-    navigator = nav
+    console.log("nave", nav);
+    navigation = nav
 }
  
-export const navigate = ( routeName,params)=>{
-    navigator.dispatch(
-        NavigationActions.navigate({
-            routeName,
-            params
-        })
-    )
+export const navigate = ( routeName,params )=>{
+
+    console.log(navigation);
+    // navigation.navigate(routeName)
+
+    // navigation.dispatch(
+    //     CommonActions.navigate({
+    //       name: routeName,
+    //       params: {
+    //         user: 'jane',
+    //       },
+    //     })
+    //   );
 }

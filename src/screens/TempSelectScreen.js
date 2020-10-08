@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, ScrollView } from 'react-native'
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, ScrollView , Alert } from 'react-native'
 import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -39,6 +39,21 @@ TempSelectScreen = (props) => {
         return newDate
     }
 
+    function handleDelete(id) {
+        Alert.alert(
+            "Do you want to delete this workout from history?","",
+            [
+                { text: "Keep it", style: 'cancel', onPress: () => { } },
+                {
+                    text: "Delete",
+                    style: 'destructive',
+                    onPress: () => {deleteTemp(id).then((data)=>{console.log(data); data ?fetchTemp():null})},
+                },
+            ]
+        );
+        return true;
+    }
+
     return (
         <View style={{ backgroundColor: "#00C5C0", flex: 1 }}>
             <View style={styles.topFigure}>
@@ -70,10 +85,10 @@ TempSelectScreen = (props) => {
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                            <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDay()}/{datele(item.date).getMonth()}/{datele(item.date).getFullYear()} </Text> 
+                                            <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth()+1}/{datele(item.date).getFullYear()} </Text> 
                                             : null}
                                         </View>
-                                        <TouchableOpacity onPress={()=>deleteTemp(item._id)} style={{ alignSelf:"center",paddingRight: window.height * 0.012, flex: 0.1 }}>
+                                        <TouchableOpacity onPress={()=>handleDelete(item._id)} style={{ alignSelf:"center",paddingRight: window.height * 0.012, flex: 0.1 }}>
                                         <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf:"center" }} />
                                         </TouchableOpacity>
                                     </View>

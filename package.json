@@ -25,6 +25,7 @@
     "react-native": "~0.61.5",
     "react-native-appearance": "^0.3.4",
     "react-native-ble-manager": "^7.3.1",
+    "react-native-bluetooth-state-manager": "^1.1.2",
     "react-native-chart-kit": "^5.4.0",
     "react-native-chartjs": "^1.0.3",
     "react-native-d3-charts": "0.0.1",

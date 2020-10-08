@@ -35,7 +35,7 @@ export default {
     second:"second",
     seconds : "seconds",
     name : "name",
-    AddSession : "add session",
+    AddSession : "Add session",
     Signout : "Sign Out",
     CreatedAt: "created at ",
     connected : "Connection succeeded."
