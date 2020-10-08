@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { TouchableOpacity , Text} from 'react-native'
+import { TouchableOpacity , Text, View} from 'react-native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { createStackNavigator, HeaderBackButton } from '@react-navigation/stack'
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { SimpleLineIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
-import { Card } from 'react-native-paper';
+import { ActivityIndicator, Card } from 'react-native-paper';
 import { setNavigator } from './src/navigationRef'
 
 import { Provider as ProfileProvider } from './src/context/ProfileContext'
@@ -185,7 +185,7 @@ const accountFlow = () => {
 function MyTabs() {
   return (
     <Tab.Navigator
-      initialRouteName="accountFlow"
+      initialRouteName="tempFlow"
       activeColor="#fff"
       inactiveColor="#3e2465"
       barStyle={{ backgroundColor: '#00C5C0' }}>
@@ -211,11 +211,28 @@ function MyTabs() {
 }
 
 const App = function App() {
+  const [refreshing, setrefreshing] = useState(false)
+
+  const onRefresh = React.useCallback(async() => {
+        
+        setrefreshing(true)
+    let datas = await loginViaStored()
+        console.log(datas);
+    setrefreshing(!datas)
+}, [])
+
   const { state: { token, logedin }, loginViaStored } = useContext(AuthContext)
   useEffect(() => {
-    loginViaStored()
+    onRefresh()
   }, [])
-  return (
+
+  if(refreshing === true){
+    console.log(refreshing);
+    return(
+      <View></View>
+    )
+  }else{
+    return (
     <AppearanceProvider>
       <NavigationContainer >
         <Stack.Navigator headerMode={"none"}>
@@ -230,6 +247,8 @@ const App = function App() {
       </NavigationContainer>
     </AppearanceProvider>
   );
+  }
+  
 }
 
 export default () => {

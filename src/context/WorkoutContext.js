@@ -19,6 +19,8 @@ const trackReducer = (state , action) =>{
             return {...state , name:'' , datas:[] , HRa:0 , currentInstant:null}
         case 'set_hr':
             return{ ... state , HRa : action.payload}
+        case 'reset_workouts':
+            return {}
         default:
             return state;
     }
@@ -69,8 +71,14 @@ setHR = dispatch => (HR) =>{
     // console.log("HR :" + HR)
 }
 
+resetWorkouts = dispatch =>{
+    return()=>{
+        dispatch({type:'reset_workouts'})
+    }
+}
+
 export const { Provider , Context } = createDataContext(
     trackReducer,
-    { fetchWorkout , deleteWorkout , reset , createWorkout , startRecording , changeName , addInstant , stopRecording , setHR} ,
+    { fetchWorkout , deleteWorkout , reset , createWorkout , startRecording , changeName , addInstant , stopRecording , setHR , resetWorkouts} ,
     {recording : false , datas : [] , currentInstant : null ,  name : ""  , list: [] , HRa : 0}
 )

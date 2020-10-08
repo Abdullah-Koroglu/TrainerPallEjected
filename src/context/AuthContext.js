@@ -23,6 +23,7 @@ loginViaStored = dispatch =>{
         if(token){
             dispatch({type:'signin' , payload:token})
         }
+        return 1
     }
 } 
 

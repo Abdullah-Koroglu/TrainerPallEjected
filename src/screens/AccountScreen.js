@@ -3,13 +3,17 @@ import { Text, View, StyleSheet, Button, TouchableOpacity, Dimensions, ActivityI
 import { SafeAreaView } from "react-navigation";
 import I18n from "../services/translation"
 import { Context as AuthContext } from '../context/AuthContext'
+import { Context as TempContext } from '../context/TempContext'
+import { Context as WorkoutContext } from '../context/WorkoutContext'
 import { Context as ProfileContext } from '../context/ProfileContext'
 import { TextInput } from 'react-native-paper';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 AccountScreen = (props) => {
     const { signout } = useContext(AuthContext)
-    const { getProfile, state, updateProfile } = useContext(ProfileContext)
+    const { resetTemps } = useContext(TempContext)
+    const { resetWorkouts } = useContext(WorkoutContext)
+    const { getProfile, state, updateProfile , resetProfile } = useContext(ProfileContext)
     const [count, setCount] = useState(false);
     const [name1, setName] = useState('');
     const [age1, setAge] = useState();
@@ -23,6 +27,7 @@ AccountScreen = (props) => {
             console.log(datas);
         setrefreshing(!datas)
         datas = null
+        //dont remove log belove it does some tihng
     console.log(datas); }, 0);
         
     }, [refreshing])
@@ -37,7 +42,7 @@ AccountScreen = (props) => {
         props.navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
-                    onPress={() => { signout() }}>
+                    onPress={() => { signout() , resetProfile() , resetTemps() , resetWorkouts()}}>
                     <Text style={{ fontSize: 23, color: "#fff", marginRight: 8 }}>{I18n.t('Signout')}</Text>
 
                 </TouchableOpacity>)

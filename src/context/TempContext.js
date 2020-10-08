@@ -5,6 +5,8 @@ const trackReducer = (state , action) =>{
     switch (action.type) {
         case 'fetch_workout':
             return{ ... state , temps : action.payload}
+            case 'reset_temps' : 
+            return {}
         default:
             return state;
     }
@@ -31,8 +33,14 @@ deleteTemp = dispatch => async (id) =>{
     
 }
 
+resetTemps = dispatch =>{
+    return()=>{
+        dispatch({type:'reset_temps'})
+    }
+}
+
 export const { Provider , Context } = createDataContext(
     trackReducer,
-    { fetchTemp , createTemp , deleteTemp } ,
+    { fetchTemp , createTemp , deleteTemp , resetTemps } ,
     {temps :[]}
 )
