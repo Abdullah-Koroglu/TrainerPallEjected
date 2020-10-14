@@ -19,7 +19,8 @@ import {
     Image,
     BackHandler,
     Alert,
-    BackAndroid
+    BackAndroid,
+    Animated
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { LineChart, BarChart } from 'react-native-chart-kit'
@@ -76,31 +77,23 @@ IndexScreen = (props) => { // const instants = [];
     } = useContext(WorkoutContext)
     const tempDatas = state.temps.find(t => t._id === _id)
 
-    let downSound = null
-    let upSound = null
+    const [downSound, setdownSound] = useState()
+
+    let animatedValue = new Animated.Value(0)
 
     useEffect(() => {
-        downSound = new Sound("g.mp3", Sound.MAIN_BUNDLE, (error) => {
+        setdownSound(new Sound("down.mp3", Sound.MAIN_BUNDLE, (error) => {
             if (error) {
-              console.log('failed to load the sound', error);
-              return;
+                console.log('failed to load the sound', error);
+                return;
             }
-            // loaded successfully
-            console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
-          
-            // Play the sound with an onEnd callback
-            whoosh.play((success) => {
-              if (success) {
-                console.log('successfully finished playing');
-              } else {
-                console.log('playback failed due to audio decoding errors');
-              }
-            });
-          });
+        }))
         datalarial()
         setendofworkot(durations[durations.length - 1])
         durations.pop()
         console.log(durations, endofworkot);
+        setmaxHR(HRs[session - 1].tutukmax)
+        setminHR(HRs[session - 1].tutukmin)
     }, [])
 
     useEffect(() => {
@@ -149,7 +142,6 @@ IndexScreen = (props) => { // const instants = [];
         setdeger1(tutmac1)
     }
 
-
     thingsinInterval = () => {
         setHR(HRa)
         var instants = { HR, rpm, time }
@@ -179,15 +171,20 @@ IndexScreen = (props) => { // const instants = [];
             console.log(session, maxHR, minHR, minHeartRate);
         }
 
-
-        maxHeartRate < HR ? (setheartAttack(true) , downSound.play((success) => {
+        maxHeartRate < HR ? (setheartAttack(true), downSound.play((success) => {
             if (success) {
-              console.log('successfully finished playing');
+                console.log('successfully finished playing');
             } else {
-              console.log('playback failed due to audio decoding errors');
+                console.log('playback failed due to audio decoding errors');
             }
-          })): setheartAttack(false)
-        minHeartRate > HR ? setdetrain(true) : setdetrain(false)
+        })) : setheartAttack(false)
+        minHeartRate > HR ? (setdetrain(true), downSound.play((success) => {
+            if (success) {
+                console.log('successfully finished playing');
+            } else {
+                console.log('playback failed due to audio decoding errors');
+            }
+        })) : setdetrain(false)
 
         var total = 0
         for (var i = 0; i < datas.length; i++) {
@@ -213,6 +210,7 @@ IndexScreen = (props) => { // const instants = [];
 
     const [baslatilmis, setbaslatilmis] = useState(0)
     startWorkout = React.useEffect(() => {
+        expand()
         if (recording === true) {
             intervallama()
             setbaslatilmis(1)
@@ -222,6 +220,21 @@ IndexScreen = (props) => { // const instants = [];
                 clearInterval(myInterval)
         }
     }, [recording])
+
+    expand = () => {
+        Animated.timing(animatedValue, {
+            toValue: -0.18,
+            duration: 100,
+            // easing: Easing.ease
+        }).start(shrink)
+    }
+    shrink = () => {
+        Animated.timing(animatedValue, {
+            toValue: 0.5,
+            duration: 100,
+            // easing: Easing.ease
+        }).start()
+    }
 
 
     const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -245,8 +258,39 @@ IndexScreen = (props) => { // const instants = [];
 
                             : null
                         }
-                        <Image
-                            style={[styles.tinyLogo, { position: "absolute" }]}
+                        <Animated.Image
+                            style={
+                                [styles.tinyLogo,
+                                {
+                                    transform: [
+                                        {
+                                            translateX: animatedValue.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [1, 1.3]
+                                            })
+                                        },
+                                        {
+                                            translateY: animatedValue.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [1, 1.3]
+                                            })
+                                        },
+                                        {
+                                            scaleX: animatedValue.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [1, 1.3]
+                                            })
+                                        },
+                                        {
+                                            scaleY: animatedValue.interpolate({
+                                                inputRange: [0, 1],
+                                                outputRange: [1, 1.3]
+                                            })
+                                        },
+                                        { perspective: 1000 }
+                                    ]
+                                }
+                                ]}
                             source={require("../assets/img/heart.png")}
                         />
                         <Text style={{ position: "absolute", fontSize: window.height * 0.068, paddingBottom: 11 }}>
@@ -286,7 +330,8 @@ IndexScreen = (props) => { // const instants = [];
                     </TouchableOpacity>
                 </View> : <View style={styles.row}>
                     <TouchableOpacity onPressIn={() => {
-                        // HRa ==! 0 ?
+                        // HRa !== 0 ?
+                        // expand()
                         startRecording()
                         // :Toast.show('You should connect a HR band first.', {
                         //         duration: Toast.durations.LONG,
@@ -358,7 +403,7 @@ IndexScreen = (props) => { // const instants = [];
                     <Text style={styles.blogName}>
                         {I18n.t("AvgHR")}
                     </Text>
-                    <Text style={styles.blogName}>{!isNaN(avg)?Math.floor(avg):null}
+                    <Text style={styles.blogName}>{!isNaN(avg) ? Math.floor(avg) : null}
                     </Text>
                 </View>
             </View>
@@ -390,7 +435,8 @@ const styles = StyleSheet.create({
         height: null,
         // flex:1,
         aspectRatio: 1,
-        resizeMode: "contain"
+        resizeMode: "contain",
+        position: "absolute"
     },
     cycleButton: {
         width: window.height * 0.088,

@@ -14,17 +14,15 @@ SaveWorkoutScreen = ({ navigation }) => {
     const { state: { name, datas }, createWorkout,
         fetchWorkout, changeName, reset } = useContext(WorkoutContext)
     const [activityName, setactivityName] = useState('')
-    const [alertFlag, setAlertFlag] = useState(false)
 
-    if (alertFlag === true) {
+    const hadleAlert = () =>{
         Alert.alert(
             '',
             'Do you want to save this activity.',
             [
-                { text: 'Cancel', onPress: () => setAlertFlag(false) },
+                { text: 'Cancel', onPress: () => {} },
                 {
                     text: 'Submit', onPress: async() => {
-                        setAlertFlag(false)
                         try{
                             let data = await createWorkout(name, datas)
                             console.log(data) ,  
@@ -41,7 +39,7 @@ SaveWorkoutScreen = ({ navigation }) => {
             ],
             {
                 cancelable: true,
-                onDismiss: () => setAlertFlag(false)
+                onDismiss: () => {}
             }
         )
     }
@@ -67,7 +65,7 @@ SaveWorkoutScreen = ({ navigation }) => {
                     <TouchableOpacity
                         onPress={() => {
                             changeName(activityName),
-                                setAlertFlag(true)
+                                hadleAlert()
                         }}>
                         <Text style={styles.Button} >{I18n.t('saveActivity')}</Text>
                     </TouchableOpacity>

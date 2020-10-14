@@ -25,10 +25,6 @@ import BluetoothStateManager from 'react-native-bluetooth-state-manager';
 import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
 import Toast from 'react-native-root-toast';
 
-
-
-
-
 const window = Dimensions.get('window');
 
 const BleManagerModule = NativeModules.BleManager;
@@ -46,7 +42,8 @@ export default class ExampleScreen extends Component {
       peripherals: new Map(),
       appState: '',
       HR: 10,
-      list: []
+      list: [],
+      BLEstate: null
     }
 
     this.handleDiscoverPeripheral = this.handleDiscoverPeripheral.bind(this);
@@ -79,25 +76,25 @@ export default class ExampleScreen extends Component {
       ok: "YES",
       cancel: "NO",
       style: { // (optional)
-          backgroundColor: '#00C5C0',// (optional)
-          
-          positiveButtonTextColor: '#ffffff',// (optional)
-          positiveButtonBackgroundColor: '#5fba7d',// (optional)
-          
-          negativeButtonTextColor: '#ffffff',// (optional)
-          negativeButtonBackgroundColor: '#ba5f5f'// (optional)
+        backgroundColor: '#00C5C0',// (optional)
+
+        positiveButtonTextColor: '#ffffff',// (optional)
+        positiveButtonBackgroundColor: '#5fba7d',// (optional)
+
+        negativeButtonTextColor: '#ffffff',// (optional)
+        negativeButtonBackgroundColor: '#ba5f5f'// (optional)
       }
-  }).then(function(success) {
+    }).then(function (success) {
       console.log(success);
-  }).catch((error) => {
-    let toast = Toast.show("You can't connect a device without Locations", {
-      duration: Toast.durations.LONG,
-      position: Toast.positions.CENTER,
-      animation: true,
-      backgroundColor: "#fff",
-      textColor: "#000"
-  });
-  });
+    }).catch((error) => {
+      let toast = Toast.show("You can't connect a device without Locations", {
+        duration: Toast.durations.LONG,
+        position: Toast.positions.CENTER,
+        animation: true,
+        backgroundColor: "#fff",
+        textColor: "#000"
+      });
+    });
 
   }
 
@@ -247,23 +244,12 @@ export default class ExampleScreen extends Component {
 
   getState = () => {
     BluetoothStateManager.getState().then(bluetoothState => {
-      switch (bluetoothState) {
-        case 'Unknown':
-          console.log("a");
-        case 'Resetting':
-          console.log("q");
-        case 'Unsupported':
-          console.log("w");
-        case 'Unauthorized':
-          console.log(3);
-        case 'PoweredOff':
-          BluetoothStateManager.enable().then(setTimeout(()=>{ this.startScan() }, 300))
-        case 'PoweredOn':
-          if (this.state.scanning !== true) {
-            this.startScan()
-          }
-        default:
-          break;
+      if (bluetoothState === 'PoweredOff')
+        BluetoothStateManager.enable().then(setTimeout(() => { this.startScan() }, 300))
+      if (bluetoothState === 'PoweredOn') {
+        if (this.state.scanning !== true) {
+          this.startScan()
+        }
       }
     });
   }
@@ -290,7 +276,24 @@ export default class ExampleScreen extends Component {
           <FlatList
             data={list}
             renderItem={({ item }) =>
-              <IteminList id={item.id} rssi={item.rssi} name={item.name} onPress={() => { ble.test(item) }} connected={item.connected} />}
+              <IteminList id={item.id} rssi={item.rssi} name={item.name} onPress={() => {
+                BluetoothStateManager.getState().then((BleState) => {
+                  if (BleState === "PoweredOn") {
+                    console.log(BleState);
+                    ble.test(item)
+                  } else {
+                    console.log(BleState);
+                    let toast = Toast.show("You can't connect a device while Bluetooh is off.", {
+                      duration: Toast.durations.LONG,
+                      position: Toast.positions.CENTER,
+                      animation: true,
+                      backgroundColor: "#fff",
+                      textColor: "#000"
+                    });
+                  }
+                })
+
+              }} connected={item.connected} />}
             keyExtractor={item => item.id}
           />
         </View>
