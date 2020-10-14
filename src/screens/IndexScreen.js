@@ -29,6 +29,7 @@ import BleManager from 'react-native-ble-manager';
 import * as Progress from 'react-native-progress';
 import Toast from 'react-native-root-toast';
 import I18n from "../services/translation"
+var Sound = require('react-native-sound');
 
 
 const window = Dimensions.get('window');
@@ -75,7 +76,27 @@ IndexScreen = (props) => { // const instants = [];
     } = useContext(WorkoutContext)
     const tempDatas = state.temps.find(t => t._id === _id)
 
+    let downSound = null
+    let upSound = null
+
     useEffect(() => {
+        downSound = new Sound("g.mp3", Sound.MAIN_BUNDLE, (error) => {
+            if (error) {
+              console.log('failed to load the sound', error);
+              return;
+            }
+            // loaded successfully
+            console.log('duration in seconds: ' + whoosh.getDuration() + 'number of channels: ' + whoosh.getNumberOfChannels());
+          
+            // Play the sound with an onEnd callback
+            whoosh.play((success) => {
+              if (success) {
+                console.log('successfully finished playing');
+              } else {
+                console.log('playback failed due to audio decoding errors');
+              }
+            });
+          });
         datalarial()
         setendofworkot(durations[durations.length - 1])
         durations.pop()
@@ -159,7 +180,13 @@ IndexScreen = (props) => { // const instants = [];
         }
 
 
-        maxHeartRate < HR ? setheartAttack(true) : setheartAttack(false)
+        maxHeartRate < HR ? (setheartAttack(true) , downSound.play((success) => {
+            if (success) {
+              console.log('successfully finished playing');
+            } else {
+              console.log('playback failed due to audio decoding errors');
+            }
+          })): setheartAttack(false)
         minHeartRate > HR ? setdetrain(true) : setdetrain(false)
 
         var total = 0
