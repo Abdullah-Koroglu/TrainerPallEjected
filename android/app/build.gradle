@@ -181,6 +181,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-android-location-services-dialog-box')
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "com.facebook.react:react-native:+"  // From node_modules
     addUnimodulesDependencies()

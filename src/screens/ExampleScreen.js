@@ -22,6 +22,9 @@ import IteminList from '../components/IteminList';
 import { ble } from './BleFunctions'
 import I18n from "../services/translation"
 import BluetoothStateManager from 'react-native-bluetooth-state-manager';
+import LocationServicesDialogBox from "react-native-android-location-services-dialog-box";
+import Toast from 'react-native-root-toast';
+
 
 
 
@@ -71,23 +74,30 @@ export default class ExampleScreen extends Component {
     this.handlerUpdate = bleManagerEmitter.addListener('BleManagerDidUpdateValueForCharacteristic', this.handleUpdateValueForCharacteristic);
     this.handlerSaved = bleManagerEmitter.addListener('retrieveSaved', this.retrieveSaved);
 
-
-
-    if (Platform.OS === 'android' && Platform.Version >= 23) {
-      PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-        if (result) {
-          console.log("Permission is OK");
-        } else {
-          PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION).then((result) => {
-            if (result) {
-              console.log("User accept");
-            } else {
-              console.log("User refuse");
-            }
-          });
-        }
-      });
-    }
+    LocationServicesDialogBox.checkLocationServicesIsEnabled({
+      message: "<font color='#ffffff'>Use Location ?</font>",
+      ok: "YES",
+      cancel: "NO",
+      style: { // (optional)
+          backgroundColor: '#00C5C0',// (optional)
+          
+          positiveButtonTextColor: '#ffffff',// (optional)
+          positiveButtonBackgroundColor: '#5fba7d',// (optional)
+          
+          negativeButtonTextColor: '#ffffff',// (optional)
+          negativeButtonBackgroundColor: '#ba5f5f'// (optional)
+      }
+  }).then(function(success) {
+      console.log(success);
+  }).catch((error) => {
+    let toast = Toast.show("You can't connect a device without Locations", {
+      duration: Toast.durations.LONG,
+      position: Toast.positions.CENTER,
+      animation: true,
+      backgroundColor: "#fff",
+      textColor: "#000"
+  });
+  });
 
   }
 

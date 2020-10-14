@@ -211,7 +211,7 @@ IndexScreen = (props) => { // const instants = [];
                     </View>
                     <View style={[styles.row, { justifyContent: "center", height: window.width * 0.4 }]}>
                         {minHeartRate > HRa ? <View><Image
-                            style={[styles.tinyLogo, { width: window.width * 0.2, left: window.width * 0.25, bottom: 0, position: "absolute" }]}
+                            style={[styles.tinyLogo, { width: window.width * 0.1, left: window.width * 0.25, bottom: 0, position: "absolute" }]}
                             source={require("../assets/img/up-arrow.png")}
                         /><View style={{ width: window.height * 0.061 }}></View>
                         </View>
@@ -245,8 +245,8 @@ IndexScreen = (props) => { // const instants = [];
                     <TouchableOpacity
                         onPressIn={() => {
                             Toast.show(I18n.t('HoldtoPause'), {
-                                duration: Toast.durations.LONG,
-                                position: Toast.positions.BOTTOM,
+                                duration: Toast.durations.SHORT,
+                                position: Toast.positions.CENTER,
                                 animation: true,
                                 backgroundColor: "#fff",
                                 textColor: "#000"
@@ -259,7 +259,7 @@ IndexScreen = (props) => { // const instants = [];
                     </TouchableOpacity>
                 </View> : <View style={styles.row}>
                     <TouchableOpacity onPressIn={() => {
-                        // HR ==! 0 ?
+                        // HRa ==! 0 ?
                         startRecording()
                         // :Toast.show('You should connect a HR band first.', {
                         //         duration: Toast.durations.LONG,
@@ -278,8 +278,8 @@ IndexScreen = (props) => { // const instants = [];
                         <TouchableOpacity
                             onPress={() => {
                                 Toast.show(I18n.t("HoldtoSave"), {
-                                    duration: Toast.durations.LONG,
-                                    position: Toast.positions.BOTTOM,
+                                    duration: Toast.durations.SHORT,
+                                    position: Toast.positions.CENTER,
                                     animation: true,
                                     backgroundColor: "#fff",
                                     textColor: "#000"
@@ -331,7 +331,7 @@ IndexScreen = (props) => { // const instants = [];
                     <Text style={styles.blogName}>
                         {I18n.t("AvgHR")}
                     </Text>
-                    <Text style={styles.blogName}>{isNaN(Math.floor(avg))}
+                    <Text style={styles.blogName}>{!isNaN(avg)?Math.floor(avg):null}
                     </Text>
                 </View>
             </View>

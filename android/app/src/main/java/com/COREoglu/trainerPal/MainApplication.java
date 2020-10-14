@@ -1,5 +1,7 @@
 package com.COREoglu.trainerPal;
 
+import com.showlocationservicesdialogbox.LocationServicesDialogBoxPackage;
+
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;

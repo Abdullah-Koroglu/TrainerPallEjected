@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, ScrollView , Alert } from 'react-native'
+import { View, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, ScrollView, Alert } from 'react-native'
 import { Context as TempContext } from '../context/TempContext'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign , MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import I18n from "../services/translation"
 
 
 TempSelectScreen = (props) => {
-    const { state, fetchTemp , deleteTemp } = useContext(TempContext)
+    const { state, fetchTemp, deleteTemp } = useContext(TempContext)
     const [refreshing, setrefreshing] = useState(false)
 
     function wait(timeout) {
@@ -16,7 +16,7 @@ TempSelectScreen = (props) => {
             setTimeout(resolve, timeout)
         })
     }
-    const onRefresh = React.useCallback(async() => {
+    const onRefresh = React.useCallback(async () => {
         setrefreshing(true)
         let datas = await fetchTemp()
         console.log(datas);
@@ -41,13 +41,13 @@ TempSelectScreen = (props) => {
 
     function handleDelete(id) {
         Alert.alert(
-            "Do you want to delete this workout from history?","",
+            "Do you want to delete this workout from history?", "",
             [
                 { text: "Keep it", style: 'cancel', onPress: () => { } },
                 {
                     text: "Delete",
                     style: 'destructive',
-                    onPress: () => {deleteTemp(id).then((data)=>{console.log(data); data ?fetchTemp():null})},
+                    onPress: () => { deleteTemp(id).then((data) => { console.log(data); data ? fetchTemp() : null }) },
                 },
             ]
         );
@@ -67,9 +67,10 @@ TempSelectScreen = (props) => {
                 }
             >
                 <FlatList
+                    inverted
                     style={{ paddingHorizontal: window.height * 0.022 }}
                     data={state.temps}
-                    ListEmptyComponent={!refreshing?_listEmptyComponent:null}
+                    ListEmptyComponent={!refreshing ? _listEmptyComponent : null}
                     keyExtractor={item => item._id}
                     renderItem={({ item }) => {
                         return (
@@ -79,17 +80,17 @@ TempSelectScreen = (props) => {
                                 }>
                                 <View style={{ backgroundColor: "#fff", borderRadius: window.height * 0.022, flexDirection: "column", justifyContent: "center", height: window.height / 11 }}>
                                     <View style={{ flexDirection: "row", justifyContent: "center" }}>
-                                        <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ alignSelf:"center" ,flex: 0.2, paddingLeft: window.width * 0.04 }} />
-                                        <View style={{alignContent:"flex-start", flex: 0.93 }}>
+                                        <MaterialCommunityIcons name="bike" size={45} color="#000" style={{ alignSelf: "center", flex: 0.2, paddingLeft: window.width * 0.04 }} />
+                                        <View style={{ alignContent: "flex-start", flex: 0.93 }}>
                                             <Text style={{ fontSize: window.height * 0.028 }}>
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                            <Text style={{fontSize:18}}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth()+1}/{datele(item.date).getFullYear()} </Text> 
-                                            : null}
+                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth() + 1}/{datele(item.date).getFullYear()} </Text>
+                                                : null}
                                         </View>
-                                        <TouchableOpacity onPress={()=>handleDelete(item._id)} style={{ alignSelf:"center",paddingRight: window.height * 0.012, flex: 0.1 }}>
-                                        <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf:"center" }} />
+                                        <TouchableOpacity onPress={() => handleDelete(item._id)} style={{ alignSelf: "center", paddingRight: window.height * 0.012, flex: 0.1 }}>
+                                            <MaterialIcons name="delete" size={30} color="black" style={{ alignSelf: "center" }} />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -106,8 +107,8 @@ const styles = StyleSheet.create({
         paddingTop: window.height * 0.01,
         fontSize: window.height * 0.023,
         alignSelf: 'center',
-        color:"#fff",
-        justifyContent:"center"
+        color: "#fff",
+        justifyContent: "center"
     }, topFigure: {
         height: window.height * 0.6,
         borderBottomLeftRadius: window.width,

@@ -1,17 +1,17 @@
 import React, { useContext, useEffect, Component, useState } from 'react'
-import { View, ScrollView, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl , Alert} from 'react-native'
+import { View, ScrollView, Text, StyleSheet, Button, FlatList, TouchableOpacity, Dimensions, RefreshControl, Alert } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { Context as WorkoutContext } from '../context/WorkoutContext'
 import { CommonActions } from '@react-navigation/native';
 import navigate from '../navigationRef'
 const window = Dimensions.get('window');
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { AntDesign , MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import I18n from "../services/translation"
 
 
 MyWorkoutsListScreen = (props) => {
-    const { state, fetchWorkout, startRecording , deleteWorkout } = useContext(WorkoutContext)
+    const { state, fetchWorkout, startRecording, deleteWorkout } = useContext(WorkoutContext)
     const [refreshing, setrefreshing] = useState(true)
     useEffect(() => {
         onRefresh()
@@ -23,7 +23,7 @@ MyWorkoutsListScreen = (props) => {
             setTimeout(resolve, timeout)
         })
     }
-    const onRefresh = React.useCallback(async() => {
+    const onRefresh = React.useCallback(async () => {
         setrefreshing(true)
         let datas = await fetchWorkout()
         console.log(datas);
@@ -37,13 +37,13 @@ MyWorkoutsListScreen = (props) => {
 
     function handleDelete(id) {
         Alert.alert(
-            "Do you want to delete this workout from history?","",
+            "Do you want to delete this workout from history?", "",
             [
                 { text: "Keep it", style: 'cancel', onPress: () => { } },
                 {
                     text: "Delete",
                     style: 'destructive',
-                    onPress: () => {deleteWorkout(id).then((data)=>{console.log(data); data ?fetchWorkout():null})},
+                    onPress: () => { deleteWorkout(id).then((data) => { console.log(data); data ? fetchWorkout() : null }) },
                 },
             ]
         );
@@ -67,13 +67,14 @@ MyWorkoutsListScreen = (props) => {
                 contentContainerStyle={styles.scrollView}
                 refreshControl={
                     <RefreshControl
-                        refreshing={state.list?refreshing:true}
+                        refreshing={state.list ? refreshing : true}
                         onRefresh={onRefresh} />
                 }
             >
                 <View style={{ paddingHorizontal: window.height * 0.021 }}>
                     <FlatList
-                    ListEmptyComponent={!refreshing?_listEmptyComponent:null}
+                        inverted
+                        ListEmptyComponent={!refreshing ? _listEmptyComponent : null}
                         contentContainerStyle={{}}
                         data={state.list}
                         keyExtractor={item => item._id}
@@ -90,7 +91,7 @@ MyWorkoutsListScreen = (props) => {
                                                 {item.name}
                                             </Text>
                                             {datele(item.date).getFullYear() !== 1970 ?
-                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth()+1}/{datele(item.date).getFullYear()} </Text>
+                                                <Text style={{ fontSize: 18 }}>{I18n.t('CreatedAt')}{datele(item.date).getDate()}/{datele(item.date).getMonth() + 1}/{datele(item.date).getFullYear()} </Text>
                                                 : null}
                                         </View>
                                         <TouchableOpacity onPress={() => handleDelete(item._id)} style={{ alignSelf: "center", paddingRight: window.height * 0.012, flex: 0.1 }}>
@@ -122,11 +123,11 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     blogName: {
-        color:"white",
+        color: "white",
         paddingTop: window.height * 0.01,
         fontSize: window.height * 0.023,
         alignSelf: 'center',
-        alignContent:"center",
+        alignContent: "center",
     }
 })
 export default MyWorkoutsListScreen
