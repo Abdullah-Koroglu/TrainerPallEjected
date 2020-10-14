@@ -104,6 +104,7 @@ function tempFlow(props) {
           title: I18n.t('Index'),
           headerTitleAlign: "center",
           headerTintColor: "white",
+          headerLeft: null,
           headerRight: () =>
             <TouchableOpacity onPress={() => props.navigation.navigate("DeviceSelect")}>
               <FontAwesome name="bluetooth" size={30} color="#fff" style={{ marginHorizontal: 12 }} />
@@ -200,6 +201,7 @@ function MyTabs() {
         ),
       }} />
       <Tab.Screen name="accountFlow" component={accountFlow} options={{
+        tabBarLabel: I18n.t('Account'),
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="account-circle-outline" color={color} size={26} />
         ),

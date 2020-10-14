@@ -20,7 +20,8 @@ import {
     BackHandler,
     Alert,
     BackAndroid,
-    Animated
+    Animated,
+    Easing
 } from 'react-native'
 import { Feather } from '@expo/vector-icons'
 import { LineChart, BarChart } from 'react-native-chart-kit'
@@ -79,7 +80,7 @@ IndexScreen = (props) => { // const instants = [];
 
     const [downSound, setdownSound] = useState()
 
-    let animatedValue = new Animated.Value(0)
+    let animatedValue = new Animated.Value(1)
 
     useEffect(() => {
         setdownSound(new Sound("down.mp3", Sound.MAIN_BUNDLE, (error) => {
@@ -224,17 +225,36 @@ IndexScreen = (props) => { // const instants = [];
     expand = () => {
         Animated.timing(animatedValue, {
             toValue: -0.18,
-            duration: 100,
-            // easing: Easing.ease
+            duration: 1000,
+            easing: Easing.back()
         }).start(shrink)
     }
     shrink = () => {
         Animated.timing(animatedValue, {
             toValue: 0.5,
-            duration: 100,
-            // easing: Easing.ease
+            duration: 1000,
+            easing: Easing.ease
+        }).start(normallas)
+    }
+
+    normallas = () => {
+        Animated.timing(animatedValue, {
+            toValue: 1,
         }).start()
     }
+
+    const handleZip = () =>{
+        Animated.sequence([
+            Animated.timing(animatedValue,{
+                toValue:0.90,
+                duration: 50
+            }),
+            Animated.timing(animatedValue,{
+                toValue: 1,
+                duration:50
+            })
+        ]).start()
+    } 
 
 
     const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -262,30 +282,8 @@ IndexScreen = (props) => { // const instants = [];
                             style={
                                 [styles.tinyLogo,
                                 {
-                                    transform: [
-                                        {
-                                            translateX: animatedValue.interpolate({
-                                                inputRange: [0, 1],
-                                                outputRange: [1, 1.3]
-                                            })
-                                        },
-                                        {
-                                            translateY: animatedValue.interpolate({
-                                                inputRange: [0, 1],
-                                                outputRange: [1, 1.3]
-                                            })
-                                        },
-                                        {
-                                            scaleX: animatedValue.interpolate({
-                                                inputRange: [0, 1],
-                                                outputRange: [1, 1.3]
-                                            })
-                                        },
-                                        {
-                                            scaleY: animatedValue.interpolate({
-                                                inputRange: [0, 1],
-                                                outputRange: [1, 1.3]
-                                            })
+                                    transform: [{
+                                        scale : animatedValue
                                         },
                                         { perspective: 1000 }
                                     ]
@@ -293,6 +291,7 @@ IndexScreen = (props) => { // const instants = [];
                                 ]}
                             source={require("../assets/img/heart.png")}
                         />
+                        {/* <Animated.View style={[{backgroundColor: "#000" , height:70 , width : 70 , position:"absolute" , top:-60} , {transform:[{ scale : animatedValue}]} ]}/> */}
                         <Text style={{ position: "absolute", fontSize: window.height * 0.068, paddingBottom: 11 }}>
                             {HRa}
                         </Text>
@@ -331,8 +330,8 @@ IndexScreen = (props) => { // const instants = [];
                 </View> : <View style={styles.row}>
                     <TouchableOpacity onPressIn={() => {
                         // HRa !== 0 ?
-                        // expand()
-                        startRecording()
+                        handleZip()
+                        // startRecording()
                         // :Toast.show('You should connect a HR band first.', {
                         //         duration: Toast.durations.LONG,
                         //         position: Toast.positions.CENTER,
@@ -414,20 +413,20 @@ IndexScreen = (props) => { // const instants = [];
 
 const styles = StyleSheet.create({
     blogName: {
-        paddingTop: window.height * 0.01,
+        // paddingTop: window.height * 0.01,
         fontSize: window.height * 0.025,
         alignSelf: 'center'
     },
     row: {
         alignItems: 'center',
         flexDirection: 'row',
-        margin: window.height * 0.012,
+        margin: window.height * 0.008,
         justifyContent: 'space-around'
     },
     column: {
         alignItems: 'center',
         flexDirection: 'column',
-        margin: window.height * 0.012,
+        // margin: window.height * 0.012,
         justifyContent: 'space-around'
     },
     tinyLogo: {
@@ -436,7 +435,7 @@ const styles = StyleSheet.create({
         // flex:1,
         aspectRatio: 1,
         resizeMode: "contain",
-        position: "absolute"
+        position: "absolute",
     },
     cycleButton: {
         width: window.height * 0.088,
