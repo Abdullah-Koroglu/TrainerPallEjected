@@ -1,9 +1,11 @@
 import React, { useContext, useState } from 'react'
 import { Text, View, StyleSheet, Button, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native'
-import { AntDesign , MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { Transition, Transitioning } from "react-native-reanimated"
 import { Context as TempContext } from "../context/TempContext"
 import I18n from "../services/translation"
+import Toast from 'react-native-root-toast';
+
 
 
 const transition = (
@@ -55,11 +57,24 @@ CreateTempScreen = (props) => {
 
     const ref = React.useRef()
 
-    async function gonder() {
+    // let ciksin
+    const gonder = async () => {
         const newDatas = await submit()
         console.log("newDatas: ", newDatas);
-        createTemp(name, newDatas)
+        const ciksin = await createTemp(name, newDatas)
+        if (ciksin === 1)
+        props.navigation.pop()
+    if (ciksin === 0)
+    Toast.show('You should provide a name workout data.', {
+        duration: Toast.durations.SHORT,
+        position: Toast.positions.CENTER,
+        animation: true,
+        backgroundColor: "#fff",
+        textColor: "#000"
+    })
     }
+
+   
 
     function splicele(index) {
         console.log(index)
@@ -75,7 +90,7 @@ CreateTempScreen = (props) => {
 
     function handleSave() {
         Alert.alert(
-            "Do you want to save the workout?","",
+            "Do you want to save the workout?", "",
             [
                 { text: "Resume", style: 'cancel', onPress: () => { } },
                 {
@@ -83,7 +98,7 @@ CreateTempScreen = (props) => {
                     style: 'destructive',
                     // If the user confirmed, then we dispatch the action we blocked earlier
                     // This will continue the action that had triggered the removal of the screen
-                    onPress: () => {gonder()},
+                    onPress: () => { gonder() },
                 },
             ]
         );
@@ -171,21 +186,24 @@ CreateTempScreen = (props) => {
                     )
                 })}
                 <View style={styles.row}>
-                    <TouchableOpacity style={[styles.tus, { margin: 17, backgroundColor: "#d2f9f8", flexDirection: "row" ,  width:"35%" , justifyContent: "center" }]} onPress={() => { handleSave() }}>
+                    <TouchableOpacity
+                        style={[styles.tus, { margin: 17, backgroundColor: "#d2f9f8", flexDirection: "row", width: "35%", justifyContent: "center" }]}
+                        onPress={() => { handleSave() }}>
                         <MaterialIcons name="save" size={24} color="#999" style={{ alignSelf: "center", margin: 3 }} />
                         <Text style={{ fontSize: 23, marginBottom: 3, marginRight: 3 }}>{I18n.t('SAVEbtn')}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={[styles.tus, { margin: 17, backgroundColor: "#d2f9f8", flexDirection: "row" , width:"35%" , justifyContent: "center" }]} onPress={() => {
-                        console.log(list);
-                        let newArray = [...list, {
-                            id: list.length !== 0 ? list[list.length - 1].id + 1 : 1,
-                            max: 0,
-                            min: 0,
-                            time: 0
-                        }]
-                        setList(newArray)
-                        console.log(list);
-                    }}>
+                    <TouchableOpacity
+                        style={[styles.tus, { margin: 17, backgroundColor: "#d2f9f8", flexDirection: "row", width: "35%", justifyContent: "center" }]}
+                        onPress={() => {
+                            let newArray = [...list, {
+                                id: list.length !== 0 ? list[list.length - 1].id + 1 : 1,
+                                max: 0,
+                                min: 0,
+                                time: 0
+                            }]
+                            setList(newArray)
+                            console.log(list);
+                        }}>
                         <AntDesign name="pluscircleo" size={24} color="#999" style={{ alignSelf: "center", margin: 3 }} />
                         <Text style={{ fontSize: 23, marginBottom: 3, marginRight: 3 }}>{I18n.t('AddSession')}</Text>
                     </TouchableOpacity>

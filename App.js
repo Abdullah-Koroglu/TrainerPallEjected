@@ -30,6 +30,7 @@ import Naber from './src/screens/TestiScreen';
 import Naberi from './src/screens/Testi2';
 import BleFunctions from './src/screens/BleFunctions';
 import I18n from "./src/services/translation"
+import { createBottomTabNavigator } from 'react-navigation-tabs';
 const Stack = createStackNavigator();
 const Tab = createMaterialBottomTabNavigator();
 
@@ -104,7 +105,6 @@ function tempFlow(props) {
           title: I18n.t('Index'),
           headerTitleAlign: "center",
           headerTintColor: "white",
-          headerLeft: null,
           headerRight: () =>
             <TouchableOpacity onPress={() => props.navigation.navigate("DeviceSelect")}>
               <FontAwesome name="bluetooth" size={30} color="#fff" style={{ marginHorizontal: 12 }} />
@@ -201,7 +201,6 @@ function MyTabs() {
         ),
       }} />
       <Tab.Screen name="accountFlow" component={accountFlow} options={{
-        tabBarLabel: I18n.t('Account'),
         tabBarIcon: ({ color }) => (
           <MaterialCommunityIcons name="account-circle-outline" color={color} size={26} />
         ),
@@ -258,9 +257,7 @@ export default () => {
         <TempProvider>
           <ProfileProvider>
             <BleFunctions></BleFunctions>
-          <App 
-          // ref={(navigator)=>{setNavigator(navigator)}}
-          />
+          <App/>
           </ProfileProvider>
         </TempProvider>
       </WorkoutProvider>

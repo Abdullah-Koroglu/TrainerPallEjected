@@ -33,8 +33,27 @@ import Toast from 'react-native-root-toast';
 import I18n from "../services/translation"
 var Sound = require('react-native-sound');
 
+import * as scale from 'd3-scale';
+import * as shape from 'd3-shape';
+import * as format from 'd3-format';
+import * as axis from 'd3-axis';
+
+const d3 = {
+    scale,
+    shape,
+    format,
+    axis,
+};
+import {
+    scaleTime,
+    scaleLinear
+} from 'd3-scale';
+
+import Svg, { Path } from 'react-native-svg';
+
 
 const window = Dimensions.get('window');
+const height = 200;
 const BleManagerModule = NativeModules.BleManager;
 const bleManagerEmitter = new NativeEventEmitter(BleManagerModule);
 
@@ -68,6 +87,48 @@ IndexScreen = (props) => { // const instants = [];
     const [peripherals, setperipherals] = useState([])
     const [sirla, setsirla] = useState(false)
     const [avg, setavg] = useState(0)
+    let scaleX
+    let scaleYmax
+    let scaleYmin
+    const [chartData, setChartData] = useState([])
+
+    getChart = () => {
+        for (let index = 0; index < durations.length -1; index++) {
+            chartData.push({ x: durations[index], ymax: HRs[index].tutukmax, ymin: HRs[index].tutukmin })
+        }
+        // chartData.push({x : endofworkot , ymax : HRs[HRs.length-1].tutukmax , ymin : HRs[HRs.length-1].tutukmin})
+    }
+
+    const data = [
+        { x: 2940, ymax: 120 , ymin : 100 },
+        { x: 2640, ymax: 120 , ymin : 100 },
+        { x: 2640, ymax: 130 , ymin : 110 },
+        { x: 2520, ymax: 130 , ymin : 110 },
+        { x: 2520, ymax: 160 , ymin : 140 },
+        { x: 2220, ymax: 160 , ymin : 140 },
+        { x: 2220, ymax: 160 , ymin : 140 },
+        { x: 2220, ymax: 140 , ymin : 120 },
+        { x: 1920, ymax: 140 , ymin : 120 },
+        { x: 1920, ymax: 150 , ymin : 130 },
+        { x: 720, ymax: 150 , ymin : 130 },
+        { x: 720, ymax: 130 , ymin : 120 },
+        { x: 120, ymax: 130 , ymin : 120 },
+        { x: 120, ymax: 120 , ymin : 110 },
+        { x: 0, ymax: 120 , ymin : 110 },
+      ]
+
+    scaleX = scaleLinear().domain([0, durations[durations.length - 1]]).range([0, window.width])
+    scaleYmax = scaleLinear().domain([120, 160]).range([100, 0])
+    scaleYmin = scaleLinear().domain([100, 140]).range([100, 0])
+
+    let linemax = d3.shape.line()
+        .x(d => scaleX(d.x))
+        .y(d => scaleYmax(d.ymax))
+        .curve(d3.shape.curveLinear)(chartData)
+    let linemin = d3.shape.line()
+        .x(d => scaleX(d.x))
+        .y(d => scaleYmax(d.ymin))
+        .curve(d3.shape.curveLinear)(chartData)
 
     const { state } = useContext(TempContext)
     const { state: { recording, datas, HRa },
@@ -91,8 +152,11 @@ IndexScreen = (props) => { // const instants = [];
         }))
         datalarial()
         setendofworkot(durations[durations.length - 1])
+        console.log(durations, endofworkot , durations[durations.length - 1]);
+        console.log(HRs);
+        getChart()
         durations.pop()
-        console.log(durations, endofworkot);
+        console.log(chartData);
         setmaxHR(HRs[session - 1].tutukmax)
         setminHR(HRs[session - 1].tutukmin)
     }, [])
@@ -134,7 +198,7 @@ IndexScreen = (props) => { // const instants = [];
             tutukmax = a.instants.maxHR
             tutukmin = a.instants.minHR
             HRs.push({ tutukmax, tutukmin })
-            for (let i = 0; i < a.instants.duration / 1000; i++) {
+            for (let i = 0; i < a.instants.duration/ 1000; i++) {
                 tutmac.push(a.instants.maxHR)
                 tutmac1.push(a.instants.minHR)
             }
@@ -206,12 +270,13 @@ IndexScreen = (props) => { // const instants = [];
     intervallama = () => {
         myInterval = setInterval(() => {
             thingsinInterval();
+            handleZip()
         }, 1000)
     }
 
     const [baslatilmis, setbaslatilmis] = useState(0)
     startWorkout = React.useEffect(() => {
-        expand()
+        // handleZip()
         if (recording === true) {
             intervallama()
             setbaslatilmis(1)
@@ -222,39 +287,18 @@ IndexScreen = (props) => { // const instants = [];
         }
     }, [recording])
 
-    expand = () => {
-        Animated.timing(animatedValue, {
-            toValue: -0.18,
-            duration: 1000,
-            easing: Easing.back()
-        }).start(shrink)
-    }
-    shrink = () => {
-        Animated.timing(animatedValue, {
-            toValue: 0.5,
-            duration: 1000,
-            easing: Easing.ease
-        }).start(normallas)
-    }
-
-    normallas = () => {
-        Animated.timing(animatedValue, {
-            toValue: 1,
-        }).start()
-    }
-
-    const handleZip = () =>{
+    const handleZip = () => {
         Animated.sequence([
-            Animated.timing(animatedValue,{
-                toValue:0.90,
-                duration: 50
+            Animated.timing(animatedValue, {
+                toValue: 0.90,
+                duration: 100
             }),
-            Animated.timing(animatedValue,{
+            Animated.timing(animatedValue, {
                 toValue: 1,
-                duration:50
+                duration: 100
             })
         ]).start()
-    } 
+    }
 
 
     const { width: SCREEN_WIDTH } = Dimensions.get('window');
@@ -265,12 +309,12 @@ IndexScreen = (props) => { // const instants = [];
         }}>
             <View style={styles.row}>
                 <View style={styles.column}>
-                    <View style={styles.row}>
+                    {/* <View style={styles.row}>
                         <Text style={styles.blogName}>
                             {maxHR} </Text>
-                    </View>
+                    </View> */}
                     <View style={[styles.row, { justifyContent: "center", height: window.width * 0.4 }]}>
-                        {minHeartRate > HRa ? <View><Image
+                        {/* {minHeartRate > HRa ? <View><Image
                             style={[styles.tinyLogo, { width: window.width * 0.1, left: window.width * 0.25, bottom: 0, position: "absolute" }]}
                             source={require("../assets/img/up-arrow.png")}
                         /><View style={{ width: window.height * 0.061 }}></View>
@@ -283,15 +327,14 @@ IndexScreen = (props) => { // const instants = [];
                                 [styles.tinyLogo,
                                 {
                                     transform: [{
-                                        scale : animatedValue
-                                        },
-                                        { perspective: 1000 }
+                                        scale: animatedValue
+                                    },
+                                    { perspective: 1000 }
                                     ]
                                 }
                                 ]}
                             source={require("../assets/img/heart.png")}
                         />
-                        {/* <Animated.View style={[{backgroundColor: "#000" , height:70 , width : 70 , position:"absolute" , top:-60} , {transform:[{ scale : animatedValue}]} ]}/> */}
                         <Text style={{ position: "absolute", fontSize: window.height * 0.068, paddingBottom: 11 }}>
                             {HRa}
                         </Text>
@@ -299,12 +342,28 @@ IndexScreen = (props) => { // const instants = [];
                             <View><View style={{ width: window.height * 0.061 }}></View><Image
                                 style={[styles.tinyLogo, { width: window.width * 0.1, right: window.width * 0.25, bottom: 0, position: "absolute" }]}
                                 source={require("../assets/img/down-arrow.png")}
-                            /></View> : null}
+                            /></View> : null} */}
+                        <Svg
+                            width={window.width}
+                            height="900"
+                            fill="blue"
+                            stroke="red"
+                            color="green"
+                            viewBox={`0 0 ${window.width} ${window.width}`}
+                            style={{  height: height, marginTop: 240, marginLeft: 5 }}
+                        >
+                            <Path stroke="currentColor" strokeWidth="4" fill="transparent" d={linemax}></Path>
+                            <Path stroke="currentColor" strokeWidth="4" fill="transparent" d={linemin}></Path>
+                            <Path d={`M0,150 L${window.width},150`} stroke="currentColor" strokeWidth="4" />
+                            
+                            {durations.length>2?<Path d={`M${time *( window.width / durations[durations.length - 1] )},150 ${time *( window.width / durations[durations.length - 1] )},0`} stroke="currentColor" strokeWidth="4" />: null}
+                            <Path d={`M0,150 0,0`} stroke="currentColor" strokeWidth="4" />
+                        </Svg>
                     </View>
-                    <View style={styles.row}>
+                    {/* <View style={styles.row}>
                         <Text style={styles.blogName}>
                             {minHR} </Text>
-                    </View>
+                    </View> */}
                 </View>
             </View>
             <View style={styles.row}>
@@ -330,8 +389,8 @@ IndexScreen = (props) => { // const instants = [];
                 </View> : <View style={styles.row}>
                     <TouchableOpacity onPressIn={() => {
                         // HRa !== 0 ?
-                        handleZip()
-                        // startRecording()
+                        // handleZip()
+                        startRecording()
                         // :Toast.show('You should connect a HR band first.', {
                         //         duration: Toast.durations.LONG,
                         //         position: Toast.positions.CENTER,
